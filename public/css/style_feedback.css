@@ -1,0 +1,101 @@
+/* @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");  */
+:root {
+    --red: #da291c;
+    --dark-red: #a40b00;
+    --green: green;
+    --light-green: #368b44;
+    --vibrant-green: rgb(11, 118, 11);
+    --dark-green: rgba(36, 67, 40, 0.8);
+    --haze-green: #bde5d2; 
+    --white: white;
+}
+.main {
+    font-size: 24px;
+}
+.heading{
+    margin: 15px auto 5px 15px;
+    color: var(--green);
+    font-weight: bolder;
+}
+.button{
+    margin-bottom: 20px;
+}
+body { 
+    margin: 0; 
+    align-items: center; 
+    justify-content: space-around; 
+    flex-direction: column; 
+    height: 100vh; 
+    background-color: var(--haze-green); 
+    font-family: 'Poppins', sans-serif;
+} 
+.textup { 
+    text-align: center; 
+    color: var(--vibrant-green); 
+    font-weight: 700; 
+} 
+i { 
+    margin-right: 3px; 
+} 
+.form-box { 
+    width: 470px; 
+    padding: 15px; 
+    border-radius: 8px; 
+    margin: 25px auto 75px auto;
+    background-color: var(--white); 
+    box-shadow: 0 0 10px var(--dark-green); 
+} 
+form { 
+    max-width: 400px; 
+    margin: 0 auto; 
+} 
+.radio-group { 
+    display: flex; 
+} 
+input[type="radio"] { 
+    margin-right: 8px; 
+} 
+label { 
+    display: block; 
+    margin-bottom: 8px; 
+    font-size: 17px; 
+    color: var(--green); 
+    font-weight: 600; 
+} 
+.ratings {
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+}
+label[for="star"] {
+    font-size: 24px;
+    font-weight: bolder;
+}
+.starability-basic {
+    margin-top: 5px;
+}
+input, textarea { 
+    width: 100%; 
+    padding: 8px; 
+    margin-bottom: 12px; 
+    box-sizing: border-box; 
+    border-radius: 10px; 
+} 
+button { 
+    background-color: var(--light-green); 
+    color: var(--white); 
+    padding: 10px; 
+    border: none; 
+    border-radius: 25px; 
+    cursor: pointer; 
+    font-size: 15px; 
+    transition: .2s linear; 
+} 
+.card-header {
+    font-size: 40px;
+    font-weight: 400;
+    background-color: var(--red);
+    color: rgb(245, 245, 245);
+    border: 5px solid var(--dark-red);
+    border-width: 5px 0;
+}

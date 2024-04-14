@@ -1,0 +1,74 @@
+<%- include('./partials/header.ejs') %>
+
+    <link rel="stylesheet" href="./css/style_form.css">
+    <link rel="stylesheet" href="./css/style_donate.css">
+
+    <div class="main">
+        <div class="Container">
+
+            <h3>Donate Here</h3>
+            <div class="registrationForm">
+                <form action="/donate" method="post">
+                    <label for="userName">Name:</label>
+                    <input id="userName" type="text" placeholder="Enter your name" name="userName" value="<%= locals.user || '' %>" required autofocus>
+
+                    <label for="dateOfDonation">Date of Donation: </label>
+                    <input id="dateOfDonation" type="date" name="dateOfDonation" value="<%= locals.date || '' %>" required>
+                
+                    <label for="donationType">Type of Donation: </label>   
+                    <select id="option" name="donationType">
+                        <option>Clothes</option>
+                        <option>Books</option>
+                        <option>Toys</option>
+                        <option>Food</option>
+                    </select>
+    
+                    <div class="hidden" id="eventDiv" style="margin-top: 7.5px;">
+                        <label for="eventType">Type of Event: </label>
+                        <select id="eventType" name="eventType">
+                            <option>Marriage</option>
+                            <option>Religious Ceremony</option>
+                            <option>Cultural Fest/Event</option>
+                        </select>
+                    </div>
+
+                    <label for="visibility" style="margin-top: 7.5px;">Visibility: </label>
+                    <select name="visibility">
+                        <option value="0">Visibe to everyone</option>
+                        <option value="1">Visibe to registered users only</option>
+                        <option value="2">Visible to NGOs only</option>
+                    </select>
+        
+                    <label style="margin-top: 7.5px;">Pickup Address:</label>
+                    <div class="forCurrLoc">
+                        <input id="currLoc" name="currLoc" type="checkbox" location="<%= locals.currentLocation || '' %>" required>
+                        <label for="currLoc" style="font-size: 14px;">Use current location</label>
+                    </div>
+                    <div id="locResult" class="hidden">
+                        <input id="humanReadableAddress" name="addressCalc" readonly></p>
+                        <p>Latitude:<span id="lat"></span></p>
+                        <p>Longitude:<span id="lng"></span></p>
+                    </div>
+    
+                    <div class="divider" style="position: relative;">
+                        <hr>
+                        <p><span>OR</span></p>
+                        <textarea id="addressTextArea" name="pickupAddress" rows="3" placeholder=" Enter desired pickup address" required></textarea>
+                    </div>
+                    <input id="coordinates"  name="coordinates" value="" style="display: none;" />
+                    
+                    <input type="submit" value="Donate">
+                </form>
+            </div>
+
+            <div id="error">
+                <%= locals.error %>
+            </div>
+        </div>
+    </div>
+
+<%- include('./partials/footer.ejs') %>
+<% console.log("\t\tRecieved: ",locals.currentLocation) %>
+    <script src="./js/script_donate.js"></script>
+</body>
+</html>

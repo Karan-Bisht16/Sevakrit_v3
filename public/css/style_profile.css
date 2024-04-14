@@ -1,0 +1,96 @@
+:root {
+    --blue: #3381e7;
+    --yellow: #fa6400cc;
+    --white: #ffffff;
+    --gray: #303030;
+}
+
+.profile-banner {
+    margin: 0;
+    height: 200px;
+    background-image: url("../images/img-header-profile.avif");
+    position: relative;
+    top: -20px;
+}
+
+.profile-pic {
+    width: 200px; 
+    height: 200px;
+    border: 8px solid var(--gray);
+    border-radius: 8px;
+    background-image: url("../images/img-profile-pic.jpg");
+    background-position: bottom;
+    position: relative;
+    top: -120px;
+}
+
+.content {
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 100px 100px 100px;
+}
+
+.content>section {
+    display: flex;
+    gap: 20px;
+}
+
+.username {
+    font-weight: bolder;
+    font-size: 20px;
+    margin: 0px;
+}
+
+.edit {
+    height: 34px;
+    outline: none;
+    font-weight: bolder;
+    border-radius: 9999px;
+    border: 1px solid var(--blue);
+    padding: 0px 15px;
+    background-color: var(--white);
+}
+
+.icon {
+    position: fixed;
+    height: 90px;
+    width: 90px;
+    border-radius: 50%;
+    right: 25px;
+    bottom: 50px;
+    background-color: var(--blue);
+}
+
+.icon>a, icon>a>i {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    color: var(--white);
+}
+
+.icon>a>i{
+    font-size: 45px;
+    transform: translate(-50%, -50%);
+
+}
+
+.edit:hover, .icon:hover {
+    opacity: 0.8;
+}
+
+@media (max-width: 990px) {
+    .content {
+        padding: 5px 20px 50px 20px;
+    }
+}
+@media (max-height: 1000px) {
+    .icon {
+        height: 50px;
+        width: 50px;
+        right: 12.5px;
+        bottom: 10px;
+    }
+    .icon>a>i{
+        font-size: 20px;
+    }
+}

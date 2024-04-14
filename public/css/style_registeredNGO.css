@@ -1,0 +1,72 @@
+:root {
+    --blue: #3381e7;
+    --white: white;
+}
+
+section.container {
+    text-align: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+section.container>p{
+    margin: 5px 100px;
+    text-align: justify;
+}
+
+.content {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 100px 100px 100px;
+}
+
+.NGOWebpage:hover {
+    text-decoration: underline;
+}
+
+.icon {
+    position: fixed;
+    height: 90px;
+    width: 90px;
+    border-radius: 50%;
+    right: 25px;
+    bottom: 50px;
+    background-color: var(--blue);
+}
+
+.icon>a, icon>a>i {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    color: var(--white);
+}
+
+.icon>a>i{
+    font-size: 45px;
+    transform: translate(-50%, -50%);
+}
+
+.icon:hover {
+    opacity: 0.8;
+}
+
+@media (max-width:1200px) {
+    section.container>p{
+        margin:5px 20px;
+    }
+    .content{
+        padding: 20px 20px 100px 20px;
+    }
+}
+
+@media (max-height: 1000px) {
+    .icon {
+        height: 50px;
+        width: 50px;
+        right: 12.5px;
+        bottom: 10px;
+    }
+    .icon>a>i{
+        font-size: 20px;
+    }
+}

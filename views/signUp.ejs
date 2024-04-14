@@ -1,0 +1,61 @@
+<%- include('./partials/header.ejs') %>
+
+    <link rel="stylesheet" href="./css/style_form.css">
+
+    <div class="main">
+        <section class="Container">
+            <div class="Sign_up">
+                <h3>Sign up</h3>
+                <form action="/signUp" method="post">
+                    <label for="userName">Name:</label>
+                    <input type="text" name="userName" placeholder="Enter a username" required autofocus />
+
+                    <label for="userEmail">Email:</label>
+                    <input type="email" name="userEmail" placeholder="Enter your e-mail" required />
+
+                    <label for="userMobile">Mobile Number:</label>
+                    <input type="number" name="userMobile" placeholder="Enter your mobile number" required />
+
+                    <label for="userSignUpPassword">Password:</label>
+                    <div class="password">
+                        <input id="userSignUpPassword" type="password" name="userPassword" placeholder="Set a password" required />
+                        <button id="showSignUpPassword" type="button"><i class="fa-solid fa-eye"></i></button>
+                    </div>
+
+                    <div class="check">
+                        <input type="checkbox" id="signupCheck" required>
+                        <label for="signupCheck">I accept all terms & condition</label>
+                    </div>
+
+                    <input type="submit" value="Sign up">
+                </form>
+            </div>
+
+            <div id="error">
+                <%= locals.error %>
+            </div>
+
+            <div class="alternative">
+                <hr>
+                <p><a href="/signIn">Already have an account?</a></p>
+            </div>
+
+            <a href="/signUpNGO" class="link">Sign up as an NGO</a>
+        </section>
+    </div>
+
+    <%- include('./partials/footer.ejs') %>
+
+    <script>
+        const showSignUpPassword = document.getElementById("showSignUpPassword");
+        const userSignUpPassword = document.getElementById("userSignUpPassword");
+
+        showSignUpPassword.addEventListener('click', () => {
+            userSignUpPassword.setAttribute('type', 'text');
+            setTimeout(() => {
+                userSignUpPassword.setAttribute('type', 'password')
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

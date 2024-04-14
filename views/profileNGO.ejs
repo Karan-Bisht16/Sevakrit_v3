@@ -1,0 +1,80 @@
+<%- include('./partials/header.ejs') %>
+
+    <link rel="stylesheet" type="text/css" href="../../css/style_profileNGO.css">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <div class="main">
+        <div id="map" style="height: 30vh; top: -25px;">
+        </div>
+        <button id="originalPosition" class="originalPositionBtn">
+            <i class="fa-sharp fa-solid fa-location-crosshairs"></i>
+        </button>
+        <div class="content">
+            <div class="sec">
+                <p class="ngoname">
+                    <%= NGOData["name"] %>
+                </p>
+                <svg viewBox="0 0 24 24" aria-hidden="true" style="width:17.5px" class="r-1bwzh9t r-4qtqp9 r-yyyyoo r-1xvli5t r-1d4mawv r-dnmrzs r-bnwqim r-1plcrui r-lrvibr">
+                    <g><path d="M7 4V3h2v1h6V3h2v1h1.5C19.89 4 21 5.12 21 6.5v12c0 1.38-1.11 2.5-2.5 2.5h-13C4.12 21 3 19.88 3 18.5v-12C3 5.12 4.12 4 5.5 4H7zm0 2H5.5c-.27 0-.5.22-.5.5v12c0 .28.23.5.5.5h13c.28 0 .5-.22.5-.5v-12c0-.28-.22-.5-.5-.5H17v1h-2V6H9v1H7V6zm0 6h2v-2H7v2zm0 4h2v-2H7v2zm4-4h2v-2h-2v2zm0 4h2v-2h-2v2zm4-4h2v-2h-2v2z"></path></g>
+                </svg>
+                <span style="font-size: 14px;">Joined <%= NGOData["NGO_date_of_joining"] %></span>
+            </div>
+            <div class="sec">
+                <button class="edit">Edit Profile</button>
+            </div>
+        </div>
+
+        <p class="content" style="padding-bottom: 0; font-size: 28px; font-weight: bolder;">Nearby Donations</p>
+        <div class="content table-responsive">
+            <table class="table table-success table-striped-columns">
+                <thead>
+                    <tr>
+                        <th>S.No.</th>
+                        <th>Donar Name</th>
+                        <th>Date of Donation</th>
+                        <th>Type of Donation</th>
+                        <th>Pickup Address</th>
+                        <th>Approx. Distance</th>
+                        <th>Estimated Duration<br>(via Car)</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    <% let i=1; %>
+                    <% donationData.forEach(donation=>{ %>
+                    <tr>
+                        <td style="text-align: center;"> <%= i %> </td>
+                        
+                        <td> <%= donation["donar_name"] %> &nbsp; </td>
+                        
+                        <% const a=new Date(donation["date_of_donation"]); %>
+                        <td> 
+                            <%= `${a.getDate().toString().padStart(2, '0' )}-${(a.getMonth() + 1).toString().padStart(2, '0' )}-${a.getFullYear()}`%> &nbsp;
+                        </td>
+                            
+                        <% if(donation["type_of_donation"]==="Food") { %>
+                            <td><%= donation["type_of_donation"] %> &nbsp (<%= donation["type_of_event"]%>) </td>
+                        <% } else { %>
+                            <td><%= donation["type_of_donation"] %> &nbsp; </td>
+                        <% } %>
+                        
+                        <td> <%= donation["user_pickup_address"].humanReadableAddress %> </td>
+                        
+                        <td> <%= response["distances"][0][i-1]/1000 %> km </td>
+
+                        <td> <%= Math.round(response["durations"][0][i-1]/60) %> min </td>
+                    </tr>
+                    <% i++; }); %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <%- include('./partials/footer.ejs') %>
+
+    <script src="../../js/script_profileNGO.js"></script>
+
+</body>
+</html>

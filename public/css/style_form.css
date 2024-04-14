@@ -1,0 +1,155 @@
+:root {
+    --blue: #1a74ea;
+    --dark-blue: #0a2d5b;
+    --yellow: #fa6400cc;
+    --white: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    color: black;
+    background-color: var(--white);
+    font-family: 'Jost', sans-serif;
+}
+
+.main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 25px 10px 75px 10px;
+}
+
+.Container {
+    position: relative;
+    max-width: 470px;
+    width: 100%;
+    border-radius: 12px;
+    padding: 20px 30px 40px;
+    background-color: var(--white);
+    /* background-color: #2195f395; */
+    overflow: hidden;
+    box-shadow: 0 0 10px var(--dark-blue); 
+}
+
+div>h3 {
+    font-size: 34px;
+    font-weight: bolder;
+    text-align: center;
+    color: black;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+label {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+input[type="text"], input[type="email"], input[type="number"] {
+    width: 98.611%;
+    border: none;
+    padding: 5px 0 5px 5px;
+    font-size: 16px;
+    margin-bottom: 7.5px;
+    background-color: var(--white);
+    border-radius: 5px 5px 0 0;
+    border-bottom: 2px solid black;
+}
+
+.password {
+    display: flex;
+    justify-content: space-between;
+}
+
+.password>input {
+    width: 100%;
+    border: none;
+    font-size: 16px;
+    padding: 5px 0 5px 5px;
+    border-bottom: 2px solid black;
+}
+
+input:focus, textarea:focus {
+    outline-width: 0;
+}
+
+.password>input[type="text"] {
+    margin: 0 !important;
+}
+
+.password>button[type="button"] {
+    border: none;
+    padding: 0 8px;
+    cursor: pointer;
+    background-color: var(--white);
+    border-bottom: 2px solid black;
+}
+
+.link {
+    color: var(--blue);
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+input[type="submit"] {
+    border: none;
+    color: var(--white);
+    padding: 5px 0;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 600;
+    border-radius: 5px;
+    margin: 20px 0 10px 0;
+    background-color: var(--blue);
+}
+
+input[type="submit"]:hover {
+    opacity: 0.95;
+}
+
+.check {
+    margin-top: 2px;
+    display: flex;
+    gap: 5px;
+    align-content: center;
+}
+
+.check>label {
+    font-size: 16px;
+}
+
+.alternative {
+    position: relative;
+}
+
+.alternative>p {
+    display: flex;
+    justify-content: center;
+}
+
+.alternative>p>a {
+    position: absolute;
+    background-color: var(--white);
+    text-align: center;
+    top: -15px;
+    padding: 0 8px;
+    color: var(--blue);
+    font-size: 20px;
+    font-weight: 600;
+}
+
+#error {
+    color: red;
+    font-size: 16px;
+    font-weight: 600;
+}

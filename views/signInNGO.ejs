@@ -1,0 +1,58 @@
+<%- include('./partials/header.ejs') %>
+
+    <link rel="stylesheet" href="../css/style_form.css">
+
+    <div class="main">
+        <section class="Container">
+            <div class="Sign_in">
+                <h3>Sign in as a NGO</h3>
+                <form action="/signInNGO" method="post">
+                    <label for="NGOEmail">Email:</label>
+                    <input type="text" name="NGOEmail" placeholder="Enter your organisation e-mail" required autofocus />
+
+                    <label for="NGORegistrationNumber">Registration Number:</label>
+                    <input type="text" name="NGORegistrationNumber" placeholder="Enter your registration number" required />
+
+                    <label for="NGOSignInPassword">Password:</label>
+                    <div class="password">
+                        <input id="NGOSignInPassword" name="NGOPassword" type="password" placeholder="Enter your password" required />
+                        <button id="showSignInPassword" type="button">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+
+                    <a href="#" class="link">Forgot password?</a>
+
+                    <input type="submit" value="Sign in">
+                </form>
+            </div>
+
+            <div id="error">
+                <%= locals.error %>
+            </div>
+
+            <div class="alternative">
+                <hr>
+                <p><a href="/signUpNGO">Create new account</a></p>
+            </div>
+
+            <a href="/signIn" class="link">Sign in as an individual</a>
+        </section>
+
+    </div>
+
+    <%- include('./partials/footer.ejs') %>
+
+    <script>
+        const showSignInPassword = document.getElementById("showSignInPassword");
+        const NGOSignInPassword = document.getElementById("NGOSignInPassword");
+        
+        showSignInPassword.addEventListener('click', () => {
+            NGOSignInPassword.setAttribute('type', 'text');
+            setTimeout(() => {
+                NGOSignInPassword.setAttribute('type', 'password')
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<%- include('./partials/header.ejs') %>
+
+    <link rel="stylesheet" href="./css/style_registeredNGO.css">
+
+    <div class="main">        
+        <div class="content table-responsive">
+            <table class="table table-success table-striped-columns">
+                <thead>
+                    <tr>
+                        <th>S.No.</th>
+                        <th>Donar Name</th>
+                        <th>Date of Donation</th>
+                        <th>Type of Donation</th>
+                        <th>Pickup Address</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    <%  let i=1; %>
+                    <% donationData.forEach(donation=>{ %>
+                        <tr>
+                            <td><%= i %></td>
+                            
+                            <td><%= donation["donar_name"] %> &nbsp; </td>
+                            
+                            <% 
+                            const a = new Date(donation["date_of_donation"]);
+                            %>
+                            <td><%= `${a.getDate().toString().padStart(2, '0')}-${(a.getMonth() + 1).toString().padStart(2, '0')}-${a.getFullYear()}`%> &nbsp; </td> 
+                            
+                            <% if(donation["type_of_donation"]==="Food") { %>
+                                <td><%= donation["type_of_donation"] %> &nbsp (<%= donation["type_of_event"]%>) </td>
+                            <% } else { %>
+                                <td><%= donation["type_of_donation"] %> &nbsp; </td>
+                            <% } %>
+
+                            <td><%= donation["user_pickup_address"].humanReadableAddress %></td>
+                        </tr>
+                    <%  i++; }); %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+<%- include('./partials/footer.ejs') %>
+
+</body>
+</html>

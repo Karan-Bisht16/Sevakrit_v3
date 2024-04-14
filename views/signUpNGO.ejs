@@ -1,0 +1,95 @@
+<%- include('./partials/header.ejs') %>
+
+    <link rel="stylesheet" href="./css/style_form.css">
+    <link rel="stylesheet" href="./css/style_signUpNGO.css">
+
+    <div class="main">
+        <section class="Container">
+            <div class="Sign_up_ngo">
+                <h3>Sign up as a NGO</h3>
+                <form action="/signUpNGO" method="post">
+                    <div class="container" style="width: 50%;">
+                        <label for="NGOName">Name: <br></label>
+                        <input type="text" name="NGOName" placeholder="Enter the name of organisation" required autofocus />
+
+                        <div class="additional-info">
+                            <div>
+                                <label for="NGOEmail">Email: </label>
+                                <i class="fa-solid fa-circle-info" onclick="popup(this)"></i>
+                            </div>
+                            <p class="hidden">This email will be used to contact you</p>
+                        </div>
+                        <input type="email" name="NGOEmail" placeholder="Enter your organisation e-mail" required />
+                        
+                        <label for="NGOWebpage">Webpage: </label>
+                        <input type="text" name="NGOWebpage" placeholder="Enter your organisation webpage (optional)" />
+
+                        <label for="NGORange">Range: <br></label>
+                        <input type="Number" name="NGORange" placeholder="Enter the range of service (in kilometers)" required />
+                        
+                        <label>Password: </label>
+                        <div class="password">
+                            <input id="NGOSignUpPassword" type="password" name="NGOPassword" placeholder="Set a password" required />
+                            <button id="showSignUpPassword" type="button"><i class="fa-solid fa-eye"></i></button>
+                        </div>
+
+                        <div class="check">
+                            <input type="checkbox" id="signupCheck" required >
+                            <label for="signupCheck">I accept all terms & condition</label>
+                        </div>
+                    </div>
+                                
+                    <div class="container" style="width: 50%;">
+                        <div class="additional-info">
+                            <div>
+                                <label for="NGORegistrationNumber">Registration Number: </label>
+                                <i class="fa-solid fa-circle-info" onclick="popup(this)"></i>
+                            </div>
+                            <p class="hidden">This Registration Number will be verified</p>
+                        </div>
+                        <input type="text" name="NGORegistrationNumber" placeholder="Enter your registration number" required />
+                        
+                        <label for="NGOSectors">Sectors</label>
+                        <input type="text" name="NGOSectors" placeholder="Enter sectors of operation (optional)" />
+                        
+                        <label for="NGOAddress">Address</label>
+                        <div class="forCurrLoc">
+                            <input id="currLoc" name="currLoc" type="checkbox" location="<%= locals.currentLocation || ''%>" required />
+                            <label for="currLoc" style="font-size: 14px;">Use current location</label>
+                        </div>
+                        <div id="locResult" class="hidden">
+                            <input id="humanReadableAddress" name="NGOAddressCalc" readonly>
+                            <p>Latitude:<span id="lat"></span></p>
+                            <p>Longitude:<span id="lng"></span></p>
+                        </div>
+                        
+                        <div class="divider" style="position: relative;">
+                            <hr>
+                            <p><span>OR</span></p>
+                            <textarea id="addressTextArea" name="NGOAddress" rows="5" placeholder="Enter the address of organisation" required ></textarea>
+                        </div>
+                    </div>
+                    <input id="NGOCoordinates" name="NGOCoordinates" value="" style="display: none;" />
+                    
+                    <input type="submit" value="Sign up">
+                </form>
+            </div>
+
+            <div id="error">
+                <%= locals.error %>
+            </div>
+
+            <div class="alternative">
+                <hr>
+                <p><a href="/signInNGO">Already have an account?</a></p>
+            </div>
+
+            <a href="/signUp" class="link">Sign up as an individual</a>
+        </section>
+    </div>
+
+    <%- include('./partials/footer.ejs') %>
+
+    <script src="./js/script_signUpNGO.js"></script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<%- include('./partials/header.ejs') %>
+
+    <link rel="stylesheet" href="./css/style_registeredNGO.css">
+
+    <div class="main">     
+        <section class="container">
+            <h1 style="font-weight: 600;">Registered NGOs & Partners</h1>
+            <p>
+                On our platform we host <b>thousands</b> of reputable and trustworthy NGOs! We are proud to showcase a diverse array of 
+                registered NGOs, each dedicated to making a positive impact in their respective communities. With a shared commitment to 
+                social responsibility and compassion, our network of NGOs stands as a testament to the power of collective action. 
+                Through collaboration and mutual respect, we strive to amplify their voices and support their invaluable work. 
+                Explore our directory to discover the inspiring stories behind each organization and join us in fostering a brighter, 
+                more inclusive future together.
+            </p>
+        </section>
+
+        <div class="content table-responsive">
+            <table class="table table-success table-striped-columns">
+                <thead>
+                    <tr>
+                        <th>S.No.</th>
+                        <th>NGO Name</th>
+                        <th>Registration No.</th>
+                        <th>Email</th>
+                        <th>Address</th>
+                        <th>Sector</th>
+                        <th>Webpage</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    <%  let i=1; %>
+                    <% NGOData.forEach(NGO=>{ %>
+                        <tr>
+                            <td style="text-align: center;"><%= i %></td>
+                            <td><%= NGO["name"] %> &nbsp; </td>
+                            <td><%= NGO["NGO_registration_number"] %></td>
+                            <td><%= NGO["email"] %></td>
+                            <td><%= NGO["NGO_address"].humanReadableAddress %></td>
+                            <% if (NGO["NGO_sectors"]==='') { %>
+                                <td>Data not available</td>
+                            <% } else {%>
+                                <td><%= NGO["NGO_sectors"] %></td>
+                            <% } %>
+                            <% if (NGO["NGO_webpage"]==='') { %>
+                                <td>Data not available</td>
+                            <% } else {%>
+                                <td><a class="NGOWebpage" href="https://<%= NGO["NGO_webpage"] %>" target="_blank"><%= NGO["NGO_webpage"] %></a></td>
+                            <% } %>
+                        </tr>
+                    <%  i++; }); %>
+                </tbody>
+            </table>
+        </div>
+        
+        <% if (!(locals.type==="user" || locals.type==="ngo")) { %>
+            <div class="icon">
+                <a href="/signUpNGO">
+                    <i class="fa-solid fa-user-plus"></i>
+                </a>
+            </div>
+        <% } %>
+    </div>
+
+<%- include('./partials/footer.ejs') %>
+
+</body>
+</html>

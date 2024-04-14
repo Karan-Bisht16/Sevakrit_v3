@@ -1,0 +1,55 @@
+<%- include('./partials/header.ejs') %>
+
+    <link rel="stylesheet" href="../css/style_form.css">
+
+    <div class="main">
+        <section class="Container">
+            <div class="Sign_in">
+                <h3>Sign in</h3>
+                <form action="/signIn" method="post">
+                    <label for="userEmail">Email:</label>
+                    <input type="email" name="userEmail" placeholder="Enter your e-mail" required autofocus />
+
+                    <label for="userSignInPassword">Password:</label>
+                    <div class="password">
+                        <input id="userSignInPassword" name="userPassword" type="password" placeholder="Enter your password" required />
+                        <button id="showSignInPassword" type="button">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+
+                    <a href="#" class="link">Forgot password?</a>
+
+                    <input type="submit" value="Sign in">
+                </form>
+            </div>
+
+            <div id="error"> 
+                <%= locals.error %>
+            </div>
+
+            <div class="alternative">
+                <hr>
+                <p><a href="/signUp">Create new account</a></p>
+            </div>
+
+            <a href="/signInNGO" class="link">Sign in as an NGO</a>
+        </section>
+
+    </div>
+
+    <%- include('./partials/footer.ejs') %>
+
+    <script>
+        const showSignUpPassword = document.getElementById("userSignInPassword");
+        const userSignUpPassword = document.getElementById("userSignInPassword");
+        
+        showSignInPassword.addEventListener('click', () => {
+            userSignInPassword.setAttribute('type', 'text');
+            setTimeout(() => {
+                userSignInPassword.setAttribute('type', 'password')
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
