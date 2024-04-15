@@ -9,10 +9,8 @@ const router = express.Router();
 // this function will execute everyday [once a day]
 async function markingExpiredDonations() {
     await Donation.updateMany({ "date_of_donation": { $lt: new Date }, donation_status: { status: 0, NGO_name: "" } }, { donation_status: { status: 2, NGO_name: "" } })
-        .then(results => {
-            results.forEach(result => {
-                console.log(result.date_of_donation + " and " + result.donation_status.status);
-            });
+    .then(results => {
+            console.log(results);
         });
 }
 // function scheduled to be executed once a day at midnight

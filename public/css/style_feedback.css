@@ -7,15 +7,14 @@
     --vibrant-green: rgb(11, 118, 11);
     --dark-green: rgba(36, 67, 40, 0.8);
     --haze-green: #bde5d2; 
-    --white: white;
 }
 .main {
     font-size: 24px;
 }
 .heading{
-    margin: 15px auto 5px 15px;
-    color: var(--green);
+    margin: 25px 0 0 0;
     font-weight: bolder;
+    color: var(--green);
 }
 .button{
     margin-bottom: 20px;
@@ -33,34 +32,30 @@ body {
     text-align: center; 
     color: var(--vibrant-green); 
     font-weight: 700; 
+    font-size: 20px;
 } 
 i { 
     margin-right: 3px; 
-} 
-.form-box { 
-    width: 470px; 
-    padding: 15px; 
-    border-radius: 8px; 
-    margin: 25px auto 75px auto;
-    background-color: var(--white); 
-    box-shadow: 0 0 10px var(--dark-green); 
-} 
+}
 form { 
-    max-width: 400px; 
-    margin: 0 auto; 
+    max-width: 470px; 
+    margin-top: 5px !important; 
+} 
+label { 
+    display: block; 
+    margin-top: 8px; 
+    font-size: 17px; 
+    color: var(--green); 
+    font-weight: 600; 
 } 
 .radio-group { 
     display: flex; 
 } 
+.radio-group>label {
+    margin: 0 0 0 28px; 
+}
 input[type="radio"] { 
-    margin-right: 8px; 
-} 
-label { 
-    display: block; 
-    margin-bottom: 8px; 
-    font-size: 17px; 
-    color: var(--green); 
-    font-weight: 600; 
+    margin: 0px !important;
 } 
 .ratings {
     height: 40px;
@@ -72,7 +67,7 @@ label[for="star"] {
     font-weight: bolder;
 }
 .starability-basic {
-    margin-top: 5px;
+    margin: 5px 5px 0 0;
 }
 input, textarea { 
     width: 100%; 
@@ -81,6 +76,10 @@ input, textarea {
     box-sizing: border-box; 
     border-radius: 10px; 
 } 
+#floatingTextarea2 {
+    height: 100px; 
+    margin: 10px 0 0 0;
+}
 button { 
     background-color: var(--light-green); 
     color: var(--white); 

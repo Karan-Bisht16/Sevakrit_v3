@@ -1,35 +1,35 @@
 <%- include('./partials/header.ejs') %>
 
+<link rel="stylesheet" type="text/css" href="../../css/style_table.css"> 
 <link rel="stylesheet" type="text/css" href="../../css/style_profile.css"> 
 
     <div class="profile-banner"></div>
 
     <div class="main">
-        <div class="content" style="padding-bottom: 0px; height: 150px;">
-            <section>
-                <div class="profile-pic"></div>
-                <div class="sec">
-                    <p class="username"><%= userData["name"] %></p>
-                    <span style="font-size: 16px;"><%= userData["email"] %></span><br>
-                    <svg viewBox="0 0 24 24" aria-hidden="true" style="width:17.5px" class="r-1bwzh9t r-4qtqp9 r-yyyyoo r-1xvli5t r-1d4mawv r-dnmrzs r-bnwqim r-1plcrui r-lrvibr"><g><path d="M7 4V3h2v1h6V3h2v1h1.5C19.89 4 21 5.12 21 6.5v12c0 1.38-1.11 2.5-2.5 2.5h-13C4.12 21 3 19.88 3 18.5v-12C3 5.12 4.12 4 5.5 4H7zm0 2H5.5c-.27 0-.5.22-.5.5v12c0 .28.23.5.5.5h13c.28 0 .5-.22.5-.5v-12c0-.28-.22-.5-.5-.5H17v1h-2V6H9v1H7V6zm0 6h2v-2H7v2zm0 4h2v-2H7v2zm4-4h2v-2h-2v2zm0 4h2v-2h-2v2zm4-4h2v-2h-2v2z"></path></g></svg>
-                    <span style="font-size: 14px;">Joined <%= userData["user_date_of_joining"] %></span>
-                </div>
-            </section>
-            <div class="sec" style="padding-top: 20px;">
+        <img class="profile-pic" src="/images/img-profile-pic.jpg">
+        <div class="content first-half">
+            <div class="sec">
+                <p class="username"><%= userData["name"] %></p>
+                <span style="font-size: 16px;"><%= userData["email"] %></span><br>
+                <svg viewBox="0 0 24 24" aria-hidden="true" style="width:17.5px" class="r-1bwzh9t r-4qtqp9 r-yyyyoo r-1xvli5t r-1d4mawv r-dnmrzs r-bnwqim r-1plcrui r-lrvibr"><g><path d="M7 4V3h2v1h6V3h2v1h1.5C19.89 4 21 5.12 21 6.5v12c0 1.38-1.11 2.5-2.5 2.5h-13C4.12 21 3 19.88 3 18.5v-12C3 5.12 4.12 4 5.5 4H7zm0 2H5.5c-.27 0-.5.22-.5.5v12c0 .28.23.5.5.5h13c.28 0 .5-.22.5-.5v-12c0-.28-.22-.5-.5-.5H17v1h-2V6H9v1H7V6zm0 6h2v-2H7v2zm0 4h2v-2H7v2zm4-4h2v-2h-2v2zm0 4h2v-2h-2v2zm4-4h2v-2h-2v2z"></path></g></svg>
+                <span style="font-size: 14px;">Joined <%= userData["user_date_of_joining"] %></span>
+            </div>
+            <div style="padding-top: 20px;">
                 <button class="edit"><a href="/editProfile/<%= userData._id %>">Edit Profile</a></button>
             </div>
         </div>
+        
         <p class="content" style="padding-bottom: 0; font-size: 28px; font-weight: bolder;">Donation History</p>
         <div class="content table-responsive">
-            <table class="table table-success table-striped-columns">
+            <table class="table table-striped table-bordered table-hover">
                 <thead>
                     <tr>
                         <th>S.No.</th>
-                        <th>Donar Name</th>
-                        <th>Date of Donation</th>
-                        <th>Type of Donation</th>
+                        <th style="min-width: 105px;">Donar Name</th>
+                        <th style="min-width: 130px;">Date of Donation</th>
+                        <th style="min-width: 220px;">Type of Donation</th>
                         <th>Visibility</th>
-                        <th>Donation Status</th>
+                        <th style="min-width: 120px;">Donation Status</th>
                         <th>NGO</th>
                     </tr>
                 </thead>
@@ -37,19 +37,19 @@
                     <%  let i=1; %>
                     <% donationData.forEach(donation=>{ %>
                         <tr>
-                            <td><%= i %></td>
+                            <td style="text-align: center;"><%= i %></td>
                             
-                            <td><%= donation["donar_name"] %> &nbsp; </td>
+                            <td><%= donation["donar_name"] %></td>
                             
                             <% 
                             const a = new Date(donation["date_of_donation"]);
                             %>
-                            <td><%= `${a.getDate().toString().padStart(2, '0')}-${(a.getMonth() + 1).toString().padStart(2, '0')}-${a.getFullYear()}`%> &nbsp; </td>
+                            <td><%= `${a.getDate().toString().padStart(2, '0')}-${(a.getMonth() + 1).toString().padStart(2, '0')}-${a.getFullYear()}`%></td>
                             
                             <% if(donation["type_of_donation"]==="Food") { %>
-                                <td><%= donation["type_of_donation"] %> &nbsp (<%= donation["type_of_event"]%>) </td>
+                                <td><%= donation["type_of_donation"] %> (<%= donation["type_of_event"]%>)</td>
                             <% } else { %>
-                                <td><%= donation["type_of_donation"] %> &nbsp; </td>
+                                <td><%= donation["type_of_donation"] %></td>
                             <% } %>
                                     
                             <% if (donation["visibility"]===0) { %>

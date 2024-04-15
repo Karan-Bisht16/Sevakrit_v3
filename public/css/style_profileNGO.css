@@ -1,11 +1,4 @@
-* {
-    margin: 0;
-    padding: 0;
-}
-
 .content {
-    display: flex;
-    justify-content: space-between;
     padding: 20px 100px;
 }
 
@@ -24,129 +17,25 @@
     outline: none;
     font-weight: bolder;
     border-radius: 9999px;
-    border: 0.8px solid #a40b00;
+    border: 1px solid var(--blue);
     padding: 0px 15px;
+    background-color: var(--white);
 }
 
 .edit:hover {
     opacity: 0.8;
 }
 
-.originalPositionBtn {
-    outline: none;
-    color: rgb(33, 37, 41);
-    background-color: white;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-    position: relative;
-    top: -90px;
-    left: 10px;
-    padding: 2px 6px;
-    z-index: 800;
-}
-
 @media (max-width:1200px) {
     .content {
         padding: 20px 20px 100px 20px;
     }
-}
-
-.iconMarker {
-    border-radius: 50%;
-}
-
-.food::before,
-.food::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-}
-
-.food::before {
-    width: 30px;
-    height: 30px;
-    opacity: 0.8;
-    background-color: #e6e6e6;
-    border: 5px solid #ee918f;
-}
-
-.food::after {
-    width: 15px;
-    height: 15px;
-    background-color: #d25956;
-}
-
-.book::before,
-.book::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-}
-
-.book::before {
-    width: 30px;
-    height: 30px;
-    opacity: 0.8;
-    background-color: #e6e6e6;
-    border: 5px solid #e0bb94;
-}
-
-.book::after {
-    width: 15px;
-    height: 15px;
-    background-color: #d8a46c;
-}
-
-.toys::before,
-.toys::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-}
-
-.toys::before {
-    width: 30px;
-    height: 30px;
-    opacity: 0.8;
-    background-color: #e6e6e6;
-    border: 5px solid #d677d1;
-}
-
-.toys::after {
-    width: 15px;
-    height: 15px;
-    background-color: #b137b7;
-}
-
-.clothes::before,
-.clothes::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-}
-
-.clothes::before {
-    width: 30px;
-    height: 30px;
-    opacity: 0.8;
-    background-color: #e6e6e6;
-    border: 5px solid #7e77d6;
-}
-
-.clothes::after {
-    width: 15px;
-    height: 15px;
-    background-color: #3737b7;
+    .first-half {
+        padding-bottom: 0px;
+    }
+    .table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
 }
