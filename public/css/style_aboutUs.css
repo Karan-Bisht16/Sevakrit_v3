@@ -2,40 +2,56 @@
     margin: 0;
     padding: 0;
 }
+
 i {
-    color: white; 
+    color: white;
 }
+
 .tittle {
     text-align: center;
     margin: 15px auto 0 auto;
+    padding: 0px 30px;
 }
+
+.tittle>p {
+    text-align: justify;
+    text-align-last: center;
+}
+
 .container {
     justify-content: space-around;
     margin-bottom: 75px;
 }
+
 .row {
     gap: 20px;
     justify-content: center;
 }
+
 .col {
     max-width: 320px;
     position: relative;
 }
+
 .card:hover {
-    box-shadow: 0 15px 15px 15px rgba(115,193,255,0.3);
+    box-shadow: 0 15px 15px 15px rgba(115, 193, 255, 0.3);
 }
+
 .card-body {
     width: 170px;
     height: 250px;
 }
+
 .card-title {
     color: #2196f3;
     margin: 0;
 }
+
 h6.card-title {
     font-size: 12px;
     color: #555;
 }
+
 .card-img-top {
     z-index: 100;
     width: 100px;
@@ -46,23 +62,29 @@ h6.card-title {
     transition: .5s;
     cursor: pointer;
 }
+
 .card-img-top:hover {
     width: 210px;
 }
-.card-img-top:hover + .card{
+
+.card-img-top:hover+.card {
     background-color: #2195f384;
 }
-.card-img-top:hover ~ .card > .card-body{
+
+.card-img-top:hover~.card>.card-body {
     color: transparent;
 }
-.card-img-top:hover ~ .card > .card-body > h5 {
+
+.card-img-top:hover~.card>.card-body>h5 {
     color: white;
     font-size: calc(100%*2);
     font-weight: 600;
 }
-.card-img-top:hover ~ .card > .card-body > h6 {
+
+.card-img-top:hover~.card>.card-body>h6 {
     font-weight: 600;
 }
+
 .socialMedia {
     display: flex;
     gap: 20px;
@@ -70,6 +92,7 @@ h6.card-title {
     background-color: #2196f3;
     padding: 10px 20px;
 }
-.socialMedia > a > i {
+
+.socialMedia>a>i {
     font-size: 32px;
 }

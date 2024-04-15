@@ -76,9 +76,3 @@ input[type="submit"] {
     opacity: 0;
     pointer-events: none;
 }
-
-@media (max-width: 485px) {
-    .main {
-        width: 320px;
-    }
-}
