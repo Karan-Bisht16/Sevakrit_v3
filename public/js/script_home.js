@@ -88,49 +88,64 @@ async function sendPostionToServer(object) {
         });
         // all information regarding nearby ngos and donations [based on user type and donation visibility]
         const locationData = await response.json();
+        const one = { 0: "", 1: "Your " };
+        const two = { 0: "Food ", 1: "Books ", 2: "Clothes ", 3: "Toys " };
+        const three = { 0: "is open.", 1: "has been accpeted.", 2: "has expired." };
+        let foodPoint, bookPoint, clothPoint, toyPoint, accepted, expired;
         locationData.dataDonation.forEach(donation => {
             const locationArray = Object.values(donation.user_pickup_address);
             let reliableAddress = donation["user_pickup_address"].humanReadableAddress;
             if (locationArray[2] === 1) {
                 reliableAddress = JSON.stringify(locationArray[1]);
-                reliableAddress = `<a href='https://maps.google.com/?q=${donation.user_pickup_address.coordinates.latitude}, ${donation.user_pickup_address.coordinates.longitude}'>${reliableAddress}</a>`
+                reliableAddress = `<a target="_blank" href='https://maps.google.com/?q=${donation.user_pickup_address.coordinates.latitude}, ${donation.user_pickup_address.coordinates.longitude}'>${reliableAddress}</a>`
             }
             const donationLat = donation["user_pickup_address"].coordinates["latitude"];
             const donationLng = donation["user_pickup_address"].coordinates["longitude"];
             const type_of_donation = donation["type_of_donation"];
+            
+            let message = [0, 0, 0];
             // if my donation then use a base icon to make it more visible
             if (donation.donar_email === locationData.donarID) {
                 L.marker([donationLat, donationLng], { icon: customIconMine }).addTo(map);
+                message[0] = 1;
             }
             if (type_of_donation === "Food") {
-                let foodPoint = L.marker([donationLat, donationLng], { icon: customIconFood }).addTo(map);
-                foodPoint.bindPopup(`Food (${donation["type_of_event"]}) donation at ${reliableAddress}`);
+                foodPoint = L.marker([donationLat, donationLng], { icon: customIconFood }).addTo(map);
             } else if (type_of_donation === "Books") {
-                let bookPoint = L.marker([donationLat, donationLng], { icon: customIconBooks }).addTo(map);
-                bookPoint.bindPopup(`Book donation at ${reliableAddress}`);
+                bookPoint = L.marker([donationLat, donationLng], { icon: customIconBooks }).addTo(map);
+                message[1] = 1;
             } else if (type_of_donation === "Clothes") {
-                let clothPoint = L.marker([donationLat, donationLng], { icon: customIconClothes }).addTo(map);
-                clothPoint.bindPopup(`Clothes donation at ${reliableAddress}`);
+                clothPoint = L.marker([donationLat, donationLng], { icon: customIconClothes }).addTo(map);
+                message[1] = 2;
             } else if (type_of_donation === "Toys") {
-                let toyPoint = L.marker([donationLat, donationLng], { icon: customIconToys }).addTo(map);
-                toyPoint.bindPopup(`Toy donation at ${reliableAddress}`);
+                toyPoint = L.marker([donationLat, donationLng], { icon: customIconToys }).addTo(map);
+                message[1] = 3;
             }
             if (donation.donar_email === locationData.donarID) {
                 if (donation.donation_status.status === 1) {
-                    let accepted = L.marker([donationLat, donationLng], { icon: customIconAccepted }).addTo(map);
-                    accepted.bindPopup('Doantion accepted');
+                    accepted = L.marker([donationLat, donationLng], { icon: customIconAccepted }).addTo(map);
+                    message[2] = 1;
                 } else if (donation.donation_status.status === 2) {
-                    let expired = L.marker([donationLat, donationLng], { icon: customIconExpired }).addTo(map);
-                    expired.bindPopup(`Donation expired`);
+                    expired = L.marker([donationLat, donationLng], { icon: customIconExpired }).addTo(map);
+                    message[2] = 2;
                 }
             }
-        }); 
+            let string = one[message[0]] + two[message[1]] + `donation at ${reliableAddress} ` + three[message[2]];
+            if (message[2] === 0) {
+                if (message[1] === 0) { foodPoint.bindPopup(string); }
+                else if (message[1] === 1) { bookPoint.bindPopup(string); }
+                else if (message[1] === 2) { clothPoint.bindPopup(string); }
+                else if (message[1] === 3) { toyPoint.bindPopup(string); }
+            } 
+            else if (message[2] === 1) { accepted.bindPopup(string); } 
+            else if (message[2] === 2) { expired.bindPopup(string); }
+        });
         locationData.dataNGO.forEach(NGO => {
             const locationArray = Object.values(NGO.NGO_address);
             let reliableAddress = NGO["NGO_address"].humanReadableAddress;
             if (locationArray[2] === 1) {
                 reliableAddress = JSON.stringify(locationArray[1]);
-                reliableAddress = `<a href='https://maps.google.com/?q=${NGO.NGO_address.coordinates.latitude}, ${NGO.NGO_address.coordinates.longitude}'>${reliableAddress}</a>`
+                reliableAddress = `<a target="_blank" href='https://maps.google.com/?q=${NGO.NGO_address.coordinates.latitude}, ${NGO.NGO_address.coordinates.longitude}'>${reliableAddress}</a>`
             }
             const NGOLat = NGO["NGO_address"].coordinates["latitude"];
             const NGOLng = NGO["NGO_address"].coordinates["longitude"];

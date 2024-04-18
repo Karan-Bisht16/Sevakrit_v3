@@ -11,6 +11,10 @@
     padding: 20px 100px 100px 100px;
 }
 
+table {
+    min-height: 200px;
+}
+
 th, td {
     vertical-align: middle;
 }
