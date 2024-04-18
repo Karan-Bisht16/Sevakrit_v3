@@ -8,16 +8,20 @@
         <div class="header">
             <h1 class="col-md-3">Edit Profile</h1>
             <div classs="col-md-8"></div>
-            <a class="col-md-1" style="float: right; font-size: 26px; text-decoration: none;" href="/profile/user/<%= userData.name %>">Back</a>
+            <a class="col-md-1" style="float: right; font-size: 26px; text-decoration: none;" href="/profile/<%= locals.type %>/<%= data.name %>">Back</a>
         </div>
         <hr>
 
         <div class="row">
             <div class="col-md-3 text-center">
+                <% if (locals.type === "user") { %>
                     <img src="../images/img-profile-pic.jpg" class="avatar" alt="Profile Picture">
-                    <div class="col-12">
-                        <label style="margin-top: 5px;"> <%= userData.name %></label>
-                    </div>
+                <% } else if (locals.type === "ngo") { %>
+                    <img src="../images/img-profile-pic-ngo.png" class="avatar" alt="Profile Picture">
+                <% } %>
+                <div class="col-12">
+                    <label style="margin-top: 5px;"> <%= data.name %></label>
+                </div>
             </div>
 
             <div class="col-md-8 personal-info">
@@ -28,41 +32,72 @@
                     <strong>Remember</strong> the changes
                 </div>
                 <h3>Personal info</h3>
-
-                <form class="form-horizontal" onsubmit="return dataValidation()" action="/editProfile/<%= userData._id %>?_method=PATCH" method="post">
+                <% if (locals.type === "user") { %> 
+                    <form class="form-horizontal" onsubmit="return userDataValidation()" action="/editProfile/<%= data._id %>?_method=PATCH" method="post">
+                <% } else if (locals.type === "ngo") { %>
+                    <form class="form-horizontal" onsubmit="return ngoDataValidation()" action="/editProfile/<%= data._id %>?_method=PATCH" method="post">
+                <% } %>"
                     <div class="form-group">
                         <label class="col-lg-3 control-label" for="naam">First name:</label>
                         <div class="col-lg-10">
-                            <input class="form-control" type="text" value="<%=userData.name%>" id="name" name="name">
+                            <input class="form-control" type="text" value="<%=data.name%>" id="name" name="name">
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label" for="mobile">Mobile:</label>
-                        <div class="col-lg-10">
-                            <input class="form-control" type="text" value="<%=userData.user_mobile_number%>" id="mobile" name="user_mobile_number">
+                    <% if (locals.type === "user") { %>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label" for="mobile">Mobile:</label>
+                            <div class="col-lg-10">
+                                <input class="form-control" type="text" value="<%= data.user_mobile_number %>" id="mobile" name="user_mobile_number">
+                            </div>
                         </div>
-                    </div>
+                    <% } else if (locals.type === "ngo") { %>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label" for="range">Range:</label>
+                            <div class="col-lg-10">
+                                <input class="form-control" type="text" value="<%= data.NGO_range %>" id="range" name="NGO_range">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label" for="sectors">Sectors:</label>
+                            <div class="col-lg-10">
+                                <input class="form-control" type="text" value="<%= data.NGO_sectors %>" id="sectors" name="NGO_sectors">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label" for="webpage">Webpage:</label>
+                            <div class="col-lg-10">
+                                <input class="form-control" type="text" value="<%= data.NGO_webpage %>" id="webpage" name="NGO_webpage">
+                            </div>
+                        </div>
+
+                    <% } %>
 
                     <div class="form-group">
                         <label class="col-lg-5 control-label" for="email">Email:</label>
                         <div class="col-lg-10">
-                            <input class="form-control" type="text" value="<%=userData.email%>" id="email" name="email" disabled>
+                            <input class="form-control" type="text" value="<%= data.email %>" id="email" name="email" disabled>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-lg-5 control-label">Date of joining:</label>
                         <div class="col-lg-10">
-                            <input class="form-control" type="text" value="<%=userData. user_date_of_joining %>" disabled>
+                            <% if (locals.type === "user") { %>
+                                <input class="form-control" type="text" value="<%= data.user_date_of_joining %>" disabled>
+                            <% } else if (locals.type === "ngo") { %>
+                                <input class="form-control" type="text" value="<%= data.NGO_date_of_joining %>" disabled>
+                            <% } %>
                         </div>
                     </div>
-
+                    
                     <div class="form-group">
                         <label class="col-md-3 control-label"></label>
                         <div class="col-md-8">
                             <input class="btn btn-primary" type="submit" value="Submit" style="font-size: 18px;">
-                            <a href="/profile/user/<%= userData.name %>" class="cancel-btn" style="margin-left: 15px;">Cancel</a>
+                            <a href="/profile/<%= locals.type %>/<%= data.name %>" class="cancel-btn" style="margin-left: 15px;">Cancel</a>
                         </div>
                     </div>
                 </form>
@@ -72,7 +107,7 @@
 
     <%- include("./partials/footer.ejs") %>
     <script>
-        function dataValidation() {
+        function userDataValidation() {
             let name = document.getElementById("name").value;
             let mobileNo = document.getElementById("mobile").value;
             if (name == "" || mobileNo == "") {
@@ -87,9 +122,27 @@
                 alert("Enter valid mobile number.");
                 return false;
             }
-            // else {
-                return true;
-            // }
+            return true;
+        }
+
+        function ngoDataValidation() {
+            let name = document.getElementById("name").value;
+            let range = document.getElementById("range").value;
+            let sectors = document.getElementById("sectors").value;
+            let webpage = document.getElementById("webpage").value;
+            if (name == "" || range == "" ) {
+                alert("Blank values are not allowed for name and range.")
+                return false;
+            }
+            else if (range <= 0) {
+                alert("Range should be greater than 0.")
+                return false;
+            }
+            else if (isNaN(range)) {
+                alert("Enter valid range.");
+                return false;
+            }
+            return true;
         }
     </script>
 

@@ -59,6 +59,18 @@ const customIconClothes = L.divIcon({
     className: "custom-icon",
     html: `<div class="iconMarker clothes"></div>`,
 });
+const customIconMine = L.divIcon({
+    className: "custom-icon",
+    html: `<div class="iconMarker mine"></div>`,
+});
+const customIconAccepted = L.divIcon({
+    className: "custom-icon",
+    html: `<div class="iconMarker"><i class="fa-regular fa-circle-check accepted"></i></div>`,
+});
+const customIconExpired = L.divIcon({
+    className: "custom-icon",
+    html: `<div class="iconMarker"><i class="fa-regular fa-circle-xmark expired"></i></div>`,
+});
 const customIconNGO = L.divIcon({
     className: "custom-icon",
     html: `<div class="iconMarker ngo"></div>`,
@@ -81,22 +93,36 @@ async function sendPostionToServer(object) {
             let reliableAddress = donation["user_pickup_address"].humanReadableAddress;
             if (locationArray[2] === 1) {
                 reliableAddress = JSON.stringify(locationArray[1]);
+                reliableAddress = `<a href='https://maps.google.com/?q=${donation.user_pickup_address.coordinates.latitude}, ${donation.user_pickup_address.coordinates.longitude}'>${reliableAddress}</a>`
             }
             const donationLat = donation["user_pickup_address"].coordinates["latitude"];
             const donationLng = donation["user_pickup_address"].coordinates["longitude"];
             const type_of_donation = donation["type_of_donation"];
+            // if my donation then use a base icon to make it more visible
+            if (donation.donar_email === locationData.donarID) {
+                L.marker([donationLat, donationLng], { icon: customIconMine }).addTo(map);
+            }
             if (type_of_donation === "Food") {
-                const foodPoint = L.marker([donationLat, donationLng], { icon: customIconFood }).addTo(map);
+                let foodPoint = L.marker([donationLat, donationLng], { icon: customIconFood }).addTo(map);
                 foodPoint.bindPopup(`Food (${donation["type_of_event"]}) donation at ${reliableAddress}`);
             } else if (type_of_donation === "Books") {
-                const bookPoint = L.marker([donationLat, donationLng], { icon: customIconBooks }).addTo(map);
+                let bookPoint = L.marker([donationLat, donationLng], { icon: customIconBooks }).addTo(map);
                 bookPoint.bindPopup(`Book donation at ${reliableAddress}`);
             } else if (type_of_donation === "Clothes") {
-                const clothPoint = L.marker([donationLat, donationLng], { icon: customIconClothes }).addTo(map);
+                let clothPoint = L.marker([donationLat, donationLng], { icon: customIconClothes }).addTo(map);
                 clothPoint.bindPopup(`Clothes donation at ${reliableAddress}`);
             } else if (type_of_donation === "Toys") {
-                const toyPoint = L.marker([donationLat, donationLng], { icon: customIconToys }).addTo(map);
+                let toyPoint = L.marker([donationLat, donationLng], { icon: customIconToys }).addTo(map);
                 toyPoint.bindPopup(`Toy donation at ${reliableAddress}`);
+            }
+            if (donation.donar_email === locationData.donarID) {
+                if (donation.donation_status.status === 1) {
+                    let accepted = L.marker([donationLat, donationLng], { icon: customIconAccepted }).addTo(map);
+                    accepted.bindPopup('Doantion accepted');
+                } else if (donation.donation_status.status === 2) {
+                    let expired = L.marker([donationLat, donationLng], { icon: customIconExpired }).addTo(map);
+                    expired.bindPopup(`Donation expired`);
+                }
             }
         }); 
         locationData.dataNGO.forEach(NGO => {
@@ -104,6 +130,7 @@ async function sendPostionToServer(object) {
             let reliableAddress = NGO["NGO_address"].humanReadableAddress;
             if (locationArray[2] === 1) {
                 reliableAddress = JSON.stringify(locationArray[1]);
+                reliableAddress = `<a href='https://maps.google.com/?q=${NGO.NGO_address.coordinates.latitude}, ${NGO.NGO_address.coordinates.longitude}'>${reliableAddress}</a>`
             }
             const NGOLat = NGO["NGO_address"].coordinates["latitude"];
             const NGOLng = NGO["NGO_address"].coordinates["longitude"];

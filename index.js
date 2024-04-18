@@ -64,12 +64,10 @@ const ngoAuthentication = require("./routes/ngoAuthentication");
 app.use(ngoAuthentication);
 const userAuthentication = require("./routes/userAuthentication");
 app.use(userAuthentication);
-const userProfile = require("./routes/userProfile");
-app.use(userProfile);
+const profile = require("./routes/profile");
+app.use(profile);
 const editProfile = require("./routes/editProfile");
 app.use(editProfile);
-const ngoProfile = require("./routes/ngoProfile");
-app.use(ngoProfile);
 
 app.get("/logout", (req, res) => {
     req.session.destroy(err => {

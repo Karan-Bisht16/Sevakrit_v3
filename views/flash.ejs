@@ -2,12 +2,13 @@
     :root {
         --green: green;
         --light-green: #368b44;
-        --danger-red: #db4b40;
+        --danger-red: #db3f34;
         --vibrant-green: rgb(11, 118, 11);
         --dark-green: rgba(36, 67, 40, 0.8);
         --haze-green: #9ae4c0;
     }
 
+    /* .alert will select another alert in editProfile.ejs */
     .alert-success, .alert-danger {
         width: 40%;
         left: 50%;
@@ -17,6 +18,7 @@
         font-size: 20px;
         position: fixed;
         transform: translate(-50%);
+        text-align-last: center;
     }
 
     strong {
@@ -48,13 +50,13 @@
     }
 
     @media (max-width: 1100px) {
-        .alert {
+        .alert-success, .alert-danger {
             width: 65%;
         }
     }
-    @media (max-width: 600px) {
-        .alert {
-            width: 90%;
+    @media (max-width: 750px) {
+        .alert-success, .alert-danger {
+            width: 310px;
             height: 105px;
         }
     }
@@ -62,13 +64,13 @@
 
 <% if (success && success.length){%>
     <div class="d-flex justify-content-center alert alert-success" role="alert">
-        <strong><%= success %> <a href='/'>Return home</a>. </strong>
+        <strong> <%- success %> </strong>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 <%}%>
 <% if (error && error.length){%>
     <div class="d-flex justify-content-center alert alert-danger" role="alert">
-        <strong><%= error %> </strong>
+        <strong> <%- error %> </strong>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 <%}%>

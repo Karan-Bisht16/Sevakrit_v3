@@ -68,6 +68,7 @@ async function sendPostionToServer(object) {
             let reliableAddress = donation["user_pickup_address"].humanReadableAddress;
             if (locationArray[2] === 1) {
                 reliableAddress = JSON.stringify(locationArray[1]);
+                reliableAddress = `<a href='https://maps.google.com/?q=${donation.user_pickup_address.coordinates.latitude}, ${donation.user_pickup_address.coordinates.longitude}'>${reliableAddress}</a>`
             }
             const donationLat = donation["user_pickup_address"].coordinates["latitude"];
             const donationLng = donation["user_pickup_address"].coordinates["longitude"];

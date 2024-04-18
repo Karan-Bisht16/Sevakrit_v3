@@ -1,19 +1,23 @@
-.carousel-inner{
+.carousel-inner {
     top: -50px;
     /* height: 30vw; */
 }
+
 .carousel-item {
     width: 100%;
     height: calc(50vw * 0.75);
     object-fit: cover;
 }
-.carousel-item > img {
+
+.carousel-item>img {
     position: absolute;
     top: -40%;
 }
-#map{
+
+#map {
     top: -50px;
 }
+
 .originalPositionBtn {
     outline: none;
     color: rgb(33, 37, 41);
@@ -26,11 +30,13 @@
     padding: 2px 6px;
     z-index: 800;
 }
+
 .content {
     width: 90%;
     margin: 0px auto 50px auto;
     text-align: justify;
 }
+
 .title-card {
     opacity: 0;
     color: whitesmoke;
@@ -41,16 +47,20 @@
     border: 2px solid #da291c;
     transition: opacity 0.5s ease-in-out;
 }
-.title-card > p {
+
+.title-card>p {
     font-size: 18px;
 }
+
 .source {
     text-align: right;
     font-size: 12px;
 }
+
 .fade-in {
     opacity: 1 !important;
 }
+
 @media (max-width: 600px) {
     .title-card {
         margin: 10px 0px;
@@ -59,18 +69,21 @@
     }
 
 }
+
 .iconMarker {
     border-radius: 50%;
 }
+
 .food::before,
 .food::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
 }
+
 .food::before {
     width: 30px;
     height: 30px;
@@ -78,20 +91,23 @@
     background-color: #e6e6e6;
     border: 5px solid #ee918f;
 }
+
 .food::after {
     width: 15px;
     height: 15px;
     background-color: #d25956;
 }
+
 .book::before,
 .book::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
 }
+
 .book::before {
     width: 30px;
     height: 30px;
@@ -99,20 +115,23 @@
     background-color: #e6e6e6;
     border: 5px solid #e0bb94;
 }
+
 .book::after {
     width: 15px;
     height: 15px;
     background-color: #d8a46c;
 }
+
 .toys::before,
 .toys::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
 }
+
 .toys::before {
     width: 30px;
     height: 30px;
@@ -120,20 +139,23 @@
     background-color: #e6e6e6;
     border: 5px solid #d677d1;
 }
+
 .toys::after {
     width: 15px;
     height: 15px;
     background-color: #b137b7;
 }
+
 .clothes::before,
 .clothes::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
 }
+
 .clothes::before {
     width: 30px;
     height: 30px;
@@ -141,20 +163,54 @@
     background-color: #e6e6e6;
     border: 5px solid #7e77d6;
 }
+
 .clothes::after {
     width: 15px;
     height: 15px;
     background-color: #3737b7;
 }
+
+.mine {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    border: 4px solid grey;
+    border-radius: 50%;
+}
+
+.expired {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 40px;
+    color: rgb(66, 66, 66);
+}
+
+.accepted {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 40px;
+    color: gold;
+    text-shadow: 0 0 5px #000;
+}
+
 .ngo::before,
 .ngo::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
 }
+
 .ngo::before {
     width: 30px;
     height: 30px;
@@ -162,6 +218,7 @@
     background-color: #e6e6e6;
     border: 5px solid #76a253;
 }
+
 .ngo::after {
     width: 15px;
     height: 15px;
