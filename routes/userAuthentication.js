@@ -3,6 +3,7 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const saltRounds = 10;
 const User = require("../models/user");
+const Admin = require("../models/admin");
 
 const router = express.Router();
 
@@ -23,7 +24,7 @@ router.get("/signUp", (req, res) => {
     }
 });
 
-router.post('/signUp', async (req, res) => {
+router.post("/signUp", async (req, res) => {
     let { userName, userEmail, userMobile, userPassword } = req.body;
     // to check for valid email
     if (regexEmail.test(userEmail)) {
@@ -51,29 +52,31 @@ router.post('/signUp', async (req, res) => {
                             // these values will be used as display values on all other pages
                             req.session.userID = userEmail;
                             req.session.userName = userName;
-                            req.session.type = 'user';
-                            console.log("[POST] `/signUp`", req.session.userID);
-                            res.redirect('/');
+                            req.session.type = "user";
+                            req.flash("success", `Sign up successful. <a href='/profile/user/${userName}'>View profile</a>.`);
+                            res.redirect("/");
                         })
                         .catch(error => {
                             console.log("Error saving user data: ", error);
-                            res.render('/signUp', { error: "Sign up failed. Try again." });
+                            req.flash("error", "Server side error. Try again.");
+                            res.redirect("/signUp");
                         });
                 });
             } else {
-                res.render("signUp.ejs", { error: "User already exists. Try logging in." })
+                req.flash("error", "User already exists. <a href='/signIn'>Log in</a>.");
+                res.redirect("/signUp");
             }
         } else {
-            res.render("signUp.ejs", { error: 'Invalid mobile number.' });
+            res.render("signUp.ejs", { error: "Invalid mobile number." });
         }
     } else {
         // Quality of Life Change: send back form data to autofill those fields that were valid to begin with
-        // res.render("signUp.ejs", { error: 'Invalid email.', formData: req.body, errorField : 1 });
-        res.render("signUp.ejs", { error: 'Invalid email.' });
+        // res.render("signUp.ejs", { error: "Invalid email.", formData: req.body, errorField : 1 });
+        res.render("signUp.ejs", { error: "Invalid email." });
     }
 });
 
-router.get('/signIn', (req, res) => {
+router.get("/signIn", (req, res) => {
     if (req.session.type || req.session.userID || req.session.userName) {
         res.redirect("/");
     } else {
@@ -81,7 +84,7 @@ router.get('/signIn', (req, res) => {
     }
 });
 
-router.post('/signIn', async (req, res) => {
+router.post("/signIn", async (req, res) => {
     let { userEmail, userPassword } = req.body;
     // to check for valid email
     if (regexEmail.test(userEmail)) {
@@ -89,29 +92,41 @@ router.post('/signIn', async (req, res) => {
         User.findOne({ email: userEmail })
             .then(user => {
                 if (user) {
-                    bcrypt.compare(userPassword, user.user_password, (err, result) => {
+                    bcrypt.compare(userPassword, user.user_password, async (err, result) => {
                         if (err) {
                             res.render("signIn.ejs", { error: "Sign in failed. Try again." });
                         }
                         if (result) {
-                            // these values will be used as display values on other pages
+                            // check if user is an admin
+                            try {
+                                let admin = await Admin.findOne({ admin_email: userEmail })
+                                if (admin) {
+                                    req.session.isAdmin = true;
+                                }
+                            } catch (error) {
+                                console.log("Error retrieving admin detail: ", error);
+                                res.render("signIn.ejs", { error: "Server error. Try again." });
+                            }
                             req.session.userID = userEmail;
                             req.session.userName = user.name;
-                            req.session.type = 'user';
-                            res.redirect('/');
+                            req.session.type = "user";
+                            res.redirect("/");
                         } else {
-                            res.render('signIn.ejs', { error: 'Incorrect password.' });
+                            res.render("signIn.ejs", { error: "Incorrect password." });
                         }
                     });
                 } else {
-                    res.render('signIn.ejs', { error: 'User not found.' });
+                    req.flash("error", "User not found. <a href='/signUp'>Create an account</a>.");
+                    res.redirect("/signIn");
                 }
             })
-            .catch(err => {
-                res.render("signIn.ejs", { error: "Error finding user." });
+            .catch(error => {
+                console.log("Error retrieving user detail: ", error);
+                req.flash("error", "Server side error. Try again.");
+                res.redirect("/signIn");
             });
     } else {
-        res.render("signIn.ejs", { error: 'Invalid email.' })
+        res.render("signIn.ejs", { error: "Invalid email." })
     }
 });
 

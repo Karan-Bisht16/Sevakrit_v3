@@ -18,6 +18,7 @@
         font-size: 20px;
         position: fixed;
         transform: translate(-50%);
+        text-align: center;
         text-align-last: center;
     }
 
@@ -49,6 +50,18 @@
         opacity: 0.8;
     }
 
+    @keyframes expire {
+        from {width: 100%;}
+        to {width: 0;}
+    }
+
+    .flash-underline {
+        height: 4px;
+        margin-top: 16px;
+        animation-name: expire;
+        animation-duration: 5.6s;
+    }
+
     @media (max-width: 1100px) {
         .alert-success, .alert-danger {
             width: 65%;
@@ -59,18 +72,28 @@
             width: 310px;
             height: 105px;
         }
+        .flash-underline {
+            margin-top: 18px;
+        }
     }
 </style>
 
-<% if (success && success.length){%>
-    <div class="d-flex justify-content-center alert alert-success" role="alert">
-        <strong> <%- success %> </strong>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+<% if (success && success.length) { %>
+    <div id="flash-message" class="alert alert-success" role="alert">
+        <div class="d-flex justify-content-center">
+            <strong> <%- success %> </strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div class="flash-underline" style="background-color: var(--dark-green);"></div>
     </div>
-<%}%>
-<% if (error && error.length){%>
-    <div class="d-flex justify-content-center alert alert-danger" role="alert">
-        <strong> <%- error %> </strong>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+<% } %>
+
+<% if (error && error.length) { %>
+    <div id="flash-message" class="alert alert-danger" role="alert">
+        <div class="d-flex justify-content-center">
+            <strong> <%- error %> </strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div class="flash-underline" style="background-color: var(--dark-red);"></div>
     </div>
-<%}%>
+<% } %>

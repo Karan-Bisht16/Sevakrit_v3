@@ -1,7 +1,7 @@
-<%- include('./partials/header.ejs') %>
+<%- include("./partials/header.ejs") %>
 
-    <link rel="stylesheet" href="./css/style_form.css">
-    <link rel="stylesheet" href="./css/style_donate.css">
+<link rel="stylesheet" href="./css/style_form.css">
+<link rel="stylesheet" href="./css/style_donate.css">
 
     <div class="main">
         <div class="Container">
@@ -10,7 +10,7 @@
             <div class="registrationForm">
                 <form action="/donate" method="post">
                     <label for="userName">Name:</label>
-                    <input id="userName" type="text" placeholder="Enter your name" name="userName" value="<%= locals.user || '' %>" required autofocus>
+                    <input id="userName" type="text" placeholder="Enter your name" name="userName" value="<%= locals.user.userName || '' %>" required autofocus>
 
                     <label for="dateOfDonation">Date of Donation: </label>
                     <input id="dateOfDonation" type="date" name="dateOfDonation" value="<%= locals.date || '' %>" required>
@@ -67,8 +67,10 @@
         </div>
     </div>
 
-<%- include('./partials/footer.ejs') %>
+<%- include("./partials/footer.ejs") %>
+
 <% console.log("\t\tRecieved: ",locals.currentLocation) %>
-    <script src="./js/script_donate.js"></script>
+<script src="./js/script_donate.js"></script>
+
 </body>
 </html>

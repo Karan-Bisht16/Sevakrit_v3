@@ -89,12 +89,13 @@ router.post("/signUpNGO", async (req, res) => {
                                         req.session.userID = req.body["NGOEmail"];
                                         req.session.userName = req.body["NGOName"];
                                         req.session.type = "ngo";
-                                        console.log("[POST] `/signUpNGO`", req.session.userID);
+                                        req.flash("success", `Sign up successful. <a href='/profile/ngo/${req.body["NGOName"]}'>View profile</a>.`);
                                         res.redirect("/");
                                     })
                                     .catch(error => {
                                         console.log("Error saving ngo data: ", error);
-                                        res.redirect("/signUpNGO", { error: "Sign up failed. Try again." });
+                                        req.flash("error", "Server side error. Try again.");
+                                        res.redirect("/signUpNGO");
                                     });
                             });
                         });
@@ -102,10 +103,12 @@ router.post("/signUpNGO", async (req, res) => {
                     res.render("signUpNGO.ejs", { error: "Invalid range." });
                 }
             } else {
-                res.render("signUpNGO.ejs", { error: "NGO with same registration number already exists. Try logging in." });
+                req.flash("error", "NGO with same registration number already exists. <a href='/signInNGO'>Log in</a>.");
+                res.redirect("/signUpNGO");
             }
         } else {
-            res.render("signUpNGO.ejs", { error: "NGO with same e-mail id already exists. Try logging in." });
+            req.flash("error", "NGO with same e-mail id already exists. <a href='/signInNGO'>Log in</a>.");
+            res.redirect("/signUpNGO");
         }
     } else {
         res.render("signUpNGO.ejs", { error: "Invalid e-mail." });
@@ -143,11 +146,14 @@ router.post("/signInNGO", (req, res) => {
                         }
                     });
                 } else {
-                    res.render("signInNGO.ejs", { error: "NGO not found." });
+                    req.flash("error", "NGO not found. <a href='/signUpNGO'>Create an account</a>.");
+                    res.redirect("/signInNGO");
                 }
             })
             .catch(err => {
-                res.render("signInNGO.ejs", { error: "Error finding user." });
+                console.log("Error retrieving ngo detail: ", error);
+                req.flash("error", "Server side error. Try again.");
+                res.redirect("/signInNGO");
             });
     } else {
         res.render("signInNGO.ejs", { error: "Invalid email." })

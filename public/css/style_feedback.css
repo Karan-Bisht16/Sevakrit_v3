@@ -6,90 +6,108 @@
     --light-green: #368b44;
     --vibrant-green: rgb(11, 118, 11);
     --dark-green: rgba(36, 67, 40, 0.8);
-    --haze-green: #bde5d2; 
+    --haze-green: #bde5d2;
 }
+
 .main {
     font-size: 24px;
 }
-.heading{
+
+.heading {
     margin: 25px 0 0 0;
     font-weight: bolder;
     color: var(--green);
 }
-.button{
+
+.button {
     margin-bottom: 20px;
 }
-body { 
-    margin: 0; 
-    align-items: center; 
-    justify-content: space-around; 
-    flex-direction: column; 
-    height: 100vh; 
-    background-color: var(--haze-green); 
+
+body {
+    margin: 0;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
+    height: 100vh;
+    background-color: var(--haze-green);
     font-family: 'Poppins', sans-serif;
-} 
-.textup { 
-    text-align: center; 
-    color: var(--vibrant-green); 
-    font-weight: 700; 
+}
+
+.textup {
+    text-align: center;
+    color: var(--vibrant-green);
+    font-weight: 700;
     font-size: 20px;
-} 
-i { 
-    margin-right: 3px; 
 }
-form { 
-    max-width: 470px; 
-    margin-top: 5px !important; 
-} 
-label { 
-    display: block; 
-    margin-top: 8px; 
-    font-size: 17px; 
-    color: var(--green); 
-    font-weight: 600; 
-} 
-.radio-group { 
-    display: flex; 
-} 
+
+i {
+    margin-right: 3px;
+}
+
+form {
+    max-width: 470px;
+    margin-top: 5px !important;
+}
+
+label {
+    display: block;
+    margin-top: 8px;
+    font-size: 17px;
+    color: var(--green);
+    font-weight: 600;
+}
+
+.radio-group {
+    display: flex;
+}
+
 .radio-group>label {
-    margin: 0 0 0 28px; 
+    margin: 0 0 0 28px;
 }
-input[type="radio"] { 
+
+input[type="radio"] {
     margin: 0px !important;
-} 
+}
+
 .ratings {
     height: 40px;
     display: flex;
     justify-content: space-between;
 }
+
 label[for="star"] {
     font-size: 24px;
     font-weight: bolder;
 }
+
 .starability-basic {
     margin: 5px 5px 0 0;
 }
-input, textarea { 
-    width: 100%; 
-    padding: 8px; 
-    margin-bottom: 12px; 
-    box-sizing: border-box; 
-    border-radius: 10px; 
-} 
+
+input, textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 12px;
+    box-sizing: border-box;
+    border-radius: 10px;
+}
+
 #floatingTextarea2 {
-    height: 100px; 
+    height: 100px;
     margin: 10px 0 0 0;
 }
-button { 
-    background-color: var(--light-green); 
-    color: var(--white); 
-    padding: 10px; 
-    border: none; 
-    border-radius: 25px; 
-    cursor: pointer; 
-    font-size: 15px; 
-    transition: .2s linear; 
-} 
+
+button {
+    background-color: var(--light-green);
+    color: var(--white);
+    padding: 10px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: .2s linear;
+}
+
 .card-header {
     font-size: 40px;
     font-weight: 400;

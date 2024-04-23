@@ -1,7 +1,9 @@
-<%- include('./partials/header.ejs') %>
+<%- include("./partials/header.ejs") %>
 
-    <link rel="stylesheet" href="./css/style_form.css">
-    <link rel="stylesheet" href="./css/style_signUpNGO.css">
+<link rel="stylesheet" href="./css/style_form.css">
+<link rel="stylesheet" href="./css/style_signUpNGO.css">
+
+<%- include("./flash.ejs") %>
 
     <div class="main">
         <section class="Container">
@@ -54,7 +56,7 @@
                         
                         <label for="NGOAddress">Address</label>
                         <div class="forCurrLoc">
-                            <input id="currLoc" name="currLoc" type="checkbox" location="<%= locals.currentLocation || ''%>" required />
+                            <input id="currLoc" name="currLoc" type="checkbox" location="<%= locals.currentLocation || '' %>" required />
                             <label for="currLoc" style="font-size: 14px;">Use current location</label>
                         </div>
                         <div id="locResult" class="hidden">
@@ -88,8 +90,9 @@
         </section>
     </div>
 
-    <%- include('./partials/footer.ejs') %>
+<%- include("./partials/footer.ejs") %>
 
-    <script src="./js/script_signUpNGO.js"></script>
+<script src="./js/script_signUpNGO.js"></script>
+
 </body>
 </html>

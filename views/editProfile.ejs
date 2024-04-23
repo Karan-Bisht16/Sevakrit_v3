@@ -2,21 +2,21 @@
 
 <link rel="stylesheet" type="text/css" href="../../css/style_editProfile.css"> 
     
-    <%- include("./flash.ejs") %>
+<%- include("./flash.ejs") %>
 
     <div class="container">
         <div class="header">
             <h1 class="col-md-3">Edit Profile</h1>
             <div classs="col-md-8"></div>
-            <a class="col-md-1" style="float: right; font-size: 26px; text-decoration: none;" href="/profile/<%= locals.type %>/<%= data.name %>">Back</a>
+            <a class="col-md-1" style="float: right; font-size: 26px; text-decoration: none;" href="/profile/<%= user.type %>/<%= data.name %>">Back</a>
         </div>
         <hr>
 
         <div class="row">
             <div class="col-md-3 text-center">
-                <% if (locals.type === "user") { %>
+                <% if (locals.user.type === "user") { %>
                     <img src="../images/img-profile-pic.jpg" class="avatar" alt="Profile Picture">
-                <% } else if (locals.type === "ngo") { %>
+                <% } else if (locals.user.type === "ngo") { %>
                     <img src="../images/img-profile-pic-ngo.png" class="avatar" alt="Profile Picture">
                 <% } %>
                 <div class="col-12">
@@ -32,9 +32,9 @@
                     <strong>Remember</strong> the changes
                 </div>
                 <h3>Personal info</h3>
-                <% if (locals.type === "user") { %> 
+                <% if (locals.user.type === "user") { %> 
                     <form class="form-horizontal" onsubmit="return userDataValidation()" action="/editProfile/<%= data._id %>?_method=PATCH" method="post">
-                <% } else if (locals.type === "ngo") { %>
+                <% } else if (locals.user.type === "ngo") { %>
                     <form class="form-horizontal" onsubmit="return ngoDataValidation()" action="/editProfile/<%= data._id %>?_method=PATCH" method="post">
                 <% } %>"
                     <div class="form-group">
@@ -44,14 +44,14 @@
                         </div>
                     </div>
 
-                    <% if (locals.type === "user") { %>
+                    <% if (locals.user.type === "user") { %>
                         <div class="form-group">
                             <label class="col-lg-3 control-label" for="mobile">Mobile:</label>
                             <div class="col-lg-10">
                                 <input class="form-control" type="text" value="<%= data.user_mobile_number %>" id="mobile" name="user_mobile_number">
                             </div>
                         </div>
-                    <% } else if (locals.type === "ngo") { %>
+                    <% } else if (locals.user.type === "ngo") { %>
                         <div class="form-group">
                             <label class="col-lg-3 control-label" for="range">Range:</label>
                             <div class="col-lg-10">
@@ -85,9 +85,9 @@
                     <div class="form-group">
                         <label class="col-lg-5 control-label">Date of joining:</label>
                         <div class="col-lg-10">
-                            <% if (locals.type === "user") { %>
+                            <% if (locals.user.type === "user") { %>
                                 <input class="form-control" type="text" value="<%= data.user_date_of_joining %>" disabled>
-                            <% } else if (locals.type === "ngo") { %>
+                            <% } else if (locals.user.type === "ngo") { %>
                                 <input class="form-control" type="text" value="<%= data.NGO_date_of_joining %>" disabled>
                             <% } %>
                         </div>
@@ -97,7 +97,7 @@
                         <label class="col-md-3 control-label"></label>
                         <div class="col-md-8">
                             <input class="btn btn-primary" type="submit" value="Submit" style="font-size: 18px;">
-                            <a href="/profile/<%= locals.type %>/<%= data.name %>" class="cancel-btn" style="margin-left: 15px;">Cancel</a>
+                            <a href="/profile/<%= locals.user.type %>/<%= data.name %>" class="cancel-btn" style="margin-left: 15px;">Cancel</a>
                         </div>
                     </div>
                 </form>
@@ -105,46 +105,47 @@
         </div>
     </div>
 
-    <%- include("./partials/footer.ejs") %>
-    <script>
-        function userDataValidation() {
-            let name = document.getElementById("name").value;
-            let mobileNo = document.getElementById("mobile").value;
-            if (name == "" || mobileNo == "") {
-                alert("Blank values are not allowed.")
-                return false;
-            }
-            else if (mobileNo.length > 10 || mobileNo.length < 10) {
-                alert("Length of mobile number should be 10.")
-                return false;
-            }
-            else if (isNaN(mobileNo)) {
-                alert("Enter valid mobile number.");
-                return false;
-            }
-            return true;
-        }
+<%- include("./partials/footer.ejs") %>
 
-        function ngoDataValidation() {
-            let name = document.getElementById("name").value;
-            let range = document.getElementById("range").value;
-            let sectors = document.getElementById("sectors").value;
-            let webpage = document.getElementById("webpage").value;
-            if (name == "" || range == "" ) {
-                alert("Blank values are not allowed for name and range.")
-                return false;
-            }
-            else if (range <= 0) {
-                alert("Range should be greater than 0.")
-                return false;
-            }
-            else if (isNaN(range)) {
-                alert("Enter valid range.");
-                return false;
-            }
-            return true;
+<script>
+    function userDataValidation() {
+        let name = document.getElementById("name").value;
+        let mobileNo = document.getElementById("mobile").value;
+        if (name == "" || mobileNo == "") {
+            alert("Blank values are not allowed.")
+            return false;
         }
-    </script>
+        else if (mobileNo.length > 10 || mobileNo.length < 10) {
+            alert("Length of mobile number should be 10.")
+            return false;
+        }
+        else if (isNaN(mobileNo)) {
+            alert("Enter valid mobile number.");
+            return false;
+        }
+        return true;
+    }
+
+    function ngoDataValidation() {
+        let name = document.getElementById("name").value;
+        let range = document.getElementById("range").value;
+        let sectors = document.getElementById("sectors").value;
+        let webpage = document.getElementById("webpage").value;
+        if (name == "" || range == "" ) {
+            alert("Blank values are not allowed for name and range.")
+            return false;
+        }
+        else if (range <= 0) {
+            alert("Range should be greater than 0.")
+            return false;
+        }
+        else if (isNaN(range)) {
+            alert("Enter valid range.");
+            return false;
+        }
+        return true;
+    }
+</script>
 
 </body>
 </html>

@@ -6,111 +6,91 @@ require("dotenv").config();
 const NGO = require("../models/ngo");
 const User = require("../models/user");
 const Donation = require("../models/donation");
+const { userLoggedIn, ngoLoggedIn } = require("../loginMiddleware");
 
 const router = express.Router();
 
-router.get("/profile/user/:username", async (req, res) => {
-    if (req.session.userName && req.session.userID) {
-        if (req.session.type === "user") {
-            await User.findOne({ email: req.session.userID })
-                .then(result => {
-                    Donation.find({ donar_email: req.session.userID })
-                        .then(donations => {
-                            res.render("profile.ejs", { user: result.name, userData: result, donationData: donations, type: "user" });
-                        }).catch(error => {
-                            console.log("Error finding donations: ", error);
-                            res.render("home.ejs", { error: "Server side error." })
-                        })
-                }).catch(error => {
-                    console.log("Error finding user: ", error);
-                    res.render("home.ejs", { error: "No such user. Try sign-up or login." })
-                });
-
-        } else if (req.session.type === "ngo") {
-            res.redirect(`/profile/ngo:${req.session.userName}`);
-        } else {
-            res.render("home.ejs", { error: "Invalid user type" });
-        }
-    } else {
-        res.render("sign_up.ejs", { error: null });
-    }
-});
-
-router.get("/profile/ngo/:ngoname", async (req, res) => {
-    if (req.session.userName && req.session.userID) {
-        if (req.session.type === "ngo") {
-            // to find corresponding ngo
-            await NGO.findOne({ email: req.session.userID })
-            .then(resultNGO => {
-                let i = 0;
-                let destination = "";
-                // to find all 'open' donations
-                Donation.find({ donation_status: { status: 0, NGO_name: "" } })
-                    .then(resultDonation => {
-                        const origin = resultNGO.NGO_address.coordinates.latitude + "," + resultNGO.NGO_address.coordinates.longitude;
-                        resultDonation.forEach(donation => {
-                            if (i === resultDonation.length) {
-                                destination += donation.user_pickup_address.coordinates.latitude + "," + donation.user_pickup_address.coordinates.longitude;
-                            } else {
-                                destination += donation.user_pickup_address.coordinates.latitude + "," + donation.user_pickup_address.coordinates.longitude + ";";
-                            }
-                            i++;
-                        });
-                        // get distance between origin and all co-ordinates in destination
-                        const options = {
-                            method: "GET",
-                            url: "https://trueway-matrix.p.rapidapi.com/CalculateDrivingMatrix",
-                            params: {
-                                origins: origin,
-                                destinations: destination
-                            },
-                            headers: {
-                                "X-RapidAPI-Key": process.env.RapidAPI_Key,
-                                "X-RapidAPI-Host": process.env.RapidAPI_Host
-                            }
-                        };
-                        axios.request(options)
-                            .then(responseAPI => {
-                                res.render("profileNGO.ejs", { user: resultNGO.name, NGOData: resultNGO, type: req.session.type, donationData: resultDonation, response: responseAPI.data });
-                            }).catch(error => {
-                                console.log("API Error: " + error);
-                                res.render("home.ejs", {error: "Something went wrong. Try again."});
-                            });
-                    }).catch(error => {
-                        console.log("Error retrieving donation data: " + error);
-                        res.render("home.ejs", {error:"Someting went wrong. Try again."})
-                    });
+router.get("/profile/user/:username", userLoggedIn, async (req, res) => {
+    try {
+        let userData = await User.findOne({ email: req.session.userID });
+        Donation.find({ donar_email: req.session.userID })
+            .then(donations => {
+                res.render("profile.ejs", { user: req.session, userData, donationData: donations });
             }).catch(error => {
-                console.log("Error finding ngo: ", error);
-                res.render("signUpNGO.ejs", {error: "Unable to find NGO. Try logging in or sign-up."});
+                console.log("Error fetching donations: ", error);
+                req.flash("error", "Server side error. Try again.");
+                res.redirect("/");
             });
-        } else if (req.session.type === "user") {
-            res.redirect(`/profile/user:${req.session.userName}`);
-        } else {
-            res.render("home.ejs", { error: "Invalid user type" });
-        }
-    } else {
-        res.render("signUpNGO.ejs", { error: null });
+    }
+    catch (error) {
+        console.log("Error finding user: ", error);
+        req.flash("error", "No such user found. <a href='/signIn'>Log in</a> or <a href='/signUp'>create an account</a>.");
+        res.redirect("/");
     }
 });
 
-router.post("/profile/ngo/:ngoname", (req, res) => {
+router.get("/profile/ngo/:ngoname", ngoLoggedIn, async (req, res) => {
+    await NGO.findOne({ email: req.session.userID })
+        .then(resultNGO => {
+            let i = 0;
+            let destination = "";
+            // to find all "open" donations
+            Donation.find({ donation_status: { status: 0, NGO_name: "" } })
+                .then(resultDonation => {
+                    const origin = resultNGO.NGO_address.coordinates.latitude + "," + resultNGO.NGO_address.coordinates.longitude;
+                    resultDonation.forEach(donation => {
+                        if (i === resultDonation.length) {
+                            destination += donation.user_pickup_address.coordinates.latitude + "," + donation.user_pickup_address.coordinates.longitude;
+                        } else {
+                            destination += donation.user_pickup_address.coordinates.latitude + "," + donation.user_pickup_address.coordinates.longitude + ";";
+                        }
+                        i++;
+                    });
+                    // get distance between origin and all co-ordinates in destination
+                    const options = {
+                        method: "GET",
+                        url: "https://trueway-matrix.p.rapidapi.com/CalculateDrivingMatrix",
+                        params: {
+                            origins: origin,
+                            destinations: destination
+                        },
+                        headers: {
+                            "X-RapidAPI-Key": process.env.RapidAPI_Key,
+                            "X-RapidAPI-Host": process.env.RapidAPI_Host
+                        }
+                    };
+                    axios.request(options)
+                        .then(responseAPI => {
+                            res.render("profileNGO.ejs", { user: req.session, NGOData: resultNGO, donationData: resultDonation, response: responseAPI.data });
+                        }).catch(error => {
+                            console.log("API Error: " + error);
+                            req.flash("error", "Something went wrong. Refresh to resolve.");
+                            res.redirect("/");
+                        });
+                }).catch(error => {
+                    console.log("Error retrieving donation data: " + error);
+                    req.flash("error", "Something went wrong. Refresh to resolve.");
+                    res.redirect("/");
+                });
+        }).catch(error => {
+            console.log("Error finding ngo: ", error);
+            req.flash("error", "Unable to find NGO. <a href='/signIn'>Log in</a> or <a href='/signUp'>create an account</a>.");
+            res.redirect("/");
+        });
+});
+
+router.post("/profile/ngo/:ngoname", ngoLoggedIn, async (req, res) => {
     req.session.location = req.body["latitude"] + "_" + req.body["longitude"];
     console.log("[POST] `/`      Current User Location: " + req.session.location);
     req.session.nearbyNGOs = [];
-    if (req.session.userName && req.session.type==="ngo") {
-        // to find all open donations
-        Donation.find({ donation_status: { status: 0, NGO_name: "" } })
-        .then(function (resultsDonation) {
-            res.send({ dataDonation: resultsDonation});
-        }).catch(error => {
-            console.log("Error retrieving donation data: " + error);
-            res.render("home.ejs", { error: "Error finding nearby donations. Please refresh." });
-        });
-    } else if (req.session.userName && req.session.type === "ngo") {
-        res.redirect(`/profile/user:${req.session.userName}`);
-    } else {
-        res.render("signUpNGO.ejs", { error: null });
+    try {
+        let resultsDonation = await Donation.find({ donation_status: { status: 0, NGO_name: "" } })
+        res.send({ dataDonation: resultsDonation });
+    }
+    catch (error) {
+        console.log("Error finding ngo: ", error);
+        req.flash("error", "No such NGO found. <a href='/signIn'>Log in</a> or <a href='/signUp'>create an account</a>.");
+        res.redirect("/");
     }
 });
 

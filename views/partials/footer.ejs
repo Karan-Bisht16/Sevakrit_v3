@@ -18,7 +18,7 @@
                     <li class="mb-2"><a href="/">Home</a></li>
                     <li class="mb-2"><a href="/donate">Donation</a></li>
                     <li class="mb-2"><a href="/feedback">Feedback</a></li>
-                    <% if (locals.type) { %>
+                    <% if (locals.user && locals.user.type) { %>
                         <li class="mb-2"><a href="/nearbyDonations">Nearby Donations</a></li>
                     <% } %>
                     <li class="mb-2"><a href="/registeredNGO">Registered NGOs</a></li>

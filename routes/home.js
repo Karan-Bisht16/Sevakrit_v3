@@ -23,10 +23,11 @@ cron.schedule("0 20 * * *", () => {
 });
 
 router.get("/", async (req, res) => {
+    console.log(req.session);
     req.session.location = req.session.location || "";
     console.log("[GET]  `/`      Current User Location: " + req.session.location);
     if (req.session.userName && req.session.userID && req.session.type) {
-        res.render("home.ejs", { user: req.session.userName, type: req.session.type });
+        res.render("home.ejs", { user: req.session });
     } else {
         res.render("home.ejs");
     }
@@ -51,7 +52,8 @@ router.post("/", (req, res) => {
                         res.send({ dataDonation: resultDonation, dataNGO: resultNGO, donarID: req.session.userID });
                     }).catch(error => {
                         console.log("Error retrieving donation data [public+protected]: ", error);
-                        res.render("home.ejs", { error: "Error finding nearby donations. Please refresh." });
+                        req.flash("error", "Error finding nearby donations. Please refresh.");
+                        res.redirect("/");
                     })
             } else if (req.session.userName && req.session.type === "ngo") {
                 // if a registered ngo then make all donations visible
@@ -60,7 +62,8 @@ router.post("/", (req, res) => {
                         res.send({ dataDonation: resultAllDonations, dataNGO: resultNGO });
                     }).catch(error => {
                         console.log("Error retrieving donation data [public+protected]: ", error);
-                        res.render("home.ejs", { error: "Error finding nearby donations. Please refresh." });
+                        req.flash("error", "Error finding nearby donations. Please refresh.");
+                        res.redirect("/");
                     });
             } else {
                 // if an unregistered user then make only public donations visible
@@ -69,12 +72,14 @@ router.post("/", (req, res) => {
                         res.send({ dataDonation: resultLimitedDonations, dataNGO: resultNGO });
                     }).catch(error => {
                         console.log("Error retrieving donation data [public+protected]: ", error);
-                        res.render("home.ejs", { error: "Error finding nearby donations. Please refresh." });
+                        req.flash("error", "Error finding nearby donations. Please refresh.");
+                        res.redirect("/");
                     });
             }
         }).catch(error => {
             console.log("Error fetching ngos detail: ", error);
-            res.render("home.ejs", { error: "Error finding nearby NGOs. Please refresh." });
+            req.flash("error", "Error finding nearby NGOs. Please refresh.");
+            res.redirect("/");
         });
 });
 

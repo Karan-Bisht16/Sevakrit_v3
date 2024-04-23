@@ -68,6 +68,8 @@ const profile = require("./routes/profile");
 app.use(profile);
 const editProfile = require("./routes/editProfile");
 app.use(editProfile);
+const admin = require("./routes/admin");
+app.use(admin);
 
 app.get("/logout", (req, res) => {
     req.session.destroy(err => {

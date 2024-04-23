@@ -22,3 +22,12 @@ $(document).ready(function() {
         lastScrollTop = st;
     });
 });
+
+$(document).ready(function() {
+    // Set a timer to remove the flash message after 5 seconds
+    setTimeout(function() {
+        $('#flash-message').fadeOut('slow', function() {
+            $(this).remove();
+        });
+    }, 5000);
+});

@@ -3,13 +3,14 @@ const NGO = require("../models/ngo");
 
 const router = express.Router();
 
-router.get('/registeredNGO', async (req, res) => {
+router.get("/registeredNGO", async (req, res) => {
     let NGOs = await NGO.find();
     if (req.session.userName && req.session.userID) {
         if (req.session.type === "user" || req.session.type === "ngo") {
-            res.render('registeredNGO.ejs', { user: req.session.userName, NGOData: NGOs, type: req.session.type });
+            res.render("registeredNGO.ejs", { user: req.session, NGOData: NGOs});
         } else {
-            res.redirect('/', { error: "Invalid user. Please sign-in again." });
+            req.flash("error", "Server memory error. Refresh to resolve.")
+            res.redirect("/");
         }
     } else {
         res.render("registeredNGO.ejs", { NGOData: NGOs });

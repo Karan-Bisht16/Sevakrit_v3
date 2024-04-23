@@ -1,6 +1,8 @@
-<%- include('./partials/header.ejs') %>
+<%- include("./partials/header.ejs") %>
 
-    <link rel="stylesheet" href="./css/style_form.css">
+<link rel="stylesheet" href="./css/style_form.css">
+
+<%- include("./flash.ejs") %>
 
     <div class="main">
         <section class="Container">
@@ -44,18 +46,19 @@
         </section>
     </div>
 
-    <%- include('./partials/footer.ejs') %>
+<%- include("./partials/footer.ejs") %>
 
-    <script>
-        const showSignUpPassword = document.getElementById("showSignUpPassword");
-        const userSignUpPassword = document.getElementById("userSignUpPassword");
+<script>
+    const showSignUpPassword = document.getElementById("showSignUpPassword");
+    const userSignUpPassword = document.getElementById("userSignUpPassword");
 
-        showSignUpPassword.addEventListener('click', () => {
-            userSignUpPassword.setAttribute('type', 'text');
-            setTimeout(() => {
-                userSignUpPassword.setAttribute('type', 'password')
-            }, 1000);
-        });
-    </script>
+    showSignUpPassword.addEventListener("click", () => {
+        userSignUpPassword.setAttribute("type", "text");
+        setTimeout(() => {
+            userSignUpPassword.setAttribute("type", "password")
+        }, 1000);
+    });
+</script>
+
 </body>
 </html>

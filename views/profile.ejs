@@ -1,9 +1,9 @@
-<%- include('./partials/header.ejs') %>
+<%- include("./partials/header.ejs") %>
 
 <link rel="stylesheet" type="text/css" href="../../css/style_table.css"> 
 <link rel="stylesheet" type="text/css" href="../../css/style_profile.css"> 
 
-    <%- include("./flash.ejs") %>
+<%- include("./flash.ejs") %>
 
     <div class="profile-banner"></div>
 
@@ -11,7 +11,12 @@
         <img class="profile-pic" src="/images/img-profile-pic.jpg">
         <div class="content first-half">
             <div class="sec">
-                <p class="username"><%= userData["name"] %></p>
+                <p class="username">
+                    <%= userData["name"] %>
+                    <% if (user.isAdmin) { %>
+                        <span style="font-size: 18px;">&nbsp; (Admin)</span>
+                    <% } %>
+                </p>
                 <span style="font-size: 16px;"><%= userData["email"] %></span><br>
                 <svg viewBox="0 0 24 24" aria-hidden="true" style="width:17.5px" class="r-1bwzh9t r-4qtqp9 r-yyyyoo r-1xvli5t r-1d4mawv r-dnmrzs r-bnwqim r-1plcrui r-lrvibr"><g><path d="M7 4V3h2v1h6V3h2v1h1.5C19.89 4 21 5.12 21 6.5v12c0 1.38-1.11 2.5-2.5 2.5h-13C4.12 21 3 19.88 3 18.5v-12C3 5.12 4.12 4 5.5 4H7zm0 2H5.5c-.27 0-.5.22-.5.5v12c0 .28.23.5.5.5h13c.28 0 .5-.22.5-.5v-12c0-.28-.22-.5-.5-.5H17v1h-2V6H9v1H7V6zm0 6h2v-2H7v2zm0 4h2v-2H7v2zm4-4h2v-2h-2v2zm0 4h2v-2h-2v2zm4-4h2v-2h-2v2z"></path></g></svg>
                 <span style="font-size: 14px;">Joined <%= userData["user_date_of_joining"] %></span>
@@ -33,11 +38,11 @@
 
         <div class="content table-responsive">
             <table id="toSortTable" class="table table-striped table-bordered table-hover">
-                <thead>
+                <thead id="table-heading">
                     <tr>
-                        <th style="min-width: 80px; text-align: center;">S.No. &nbsp; <i id="col0" class="fa-solid fa-sort-down" onclick="sortTable(0, false)"></i></th>
-                        <th style="min-width: 130px;">Donar Name &nbsp; <i id="col1" class="fa-solid fa-sort-down" onclick="sortTable(1, false)"></i></th>
-                        <th style="min-width: 155px;">Date of Donation &nbsp; <i id="col2" class="fa-solid fa-sort-down" onclick="sortTable(2, true)"></i></th>
+                        <th style="min-width: 80px; text-align: center;">S.No. &nbsp; <i id="col0" class="colIcon fa-solid fa-sort-down" onclick="sortTable(0, 'number', 0)"></i></th>
+                        <th style="min-width: 130px;">Donar Name &nbsp; <i id="col1" class="colIcon fa-solid fa-sort-down" onclick="sortTable(1, 'text', 0)"></i></th>
+                        <th style="min-width: 155px;">Date of Donation &nbsp; <i id="col2" class="colIcon fa-solid fa-sort-down" onclick="sortTable(2, 'date', 0)"></i></th>
                         <th style="min-width: 220px;" onclick="dropdown(this)" style="position: relative;">Type of Donation &nbsp; 
                             <i id="col2" class="fa-solid fa-sort-down"></i>
                             <div class="dropdown-content">
@@ -76,7 +81,7 @@
                             <% 
                             const a = new Date(donation["date_of_donation"]);
                             %>
-                            <td><%= `${a.getDate().toString().padStart(2, '0')}-${(a.getMonth() + 1).toString().padStart(2, '0')}-${a.getFullYear()}`%></td>
+                            <td><%= `${a.getDate().toString().padStart(2, "0")}-${(a.getMonth() + 1).toString().padStart(2, "0")}-${a.getFullYear()}`%></td>
                             
                             <% if(donation["type_of_donation"]==="Food") { %>
                                 <td><%= donation["type_of_donation"] %> (<%= donation["type_of_event"]%>)</td>
@@ -92,139 +97,39 @@
                                 <td>Private</td>
                             <% } %>
 
-                            <% if (donation["donation_status"].status===0) { %>
+                            <% if (donation["donation_status"].status === 0) { %>
                                 <td>Open</td>
-                            <% } else if (donation["donation_status"].status===1) { %>
+                            <% } else if (donation["donation_status"].status === 1) { %>
                                 <td>Accepted</td>
-                            <% } else { %>
+                            <% } else if (donation["donation_status"].status === 2) { %>
                                 <td>Expired</td>
                             <% } %>
+                            
+                            <% if (donation["donation_status"].status === 0) { %>
                                 <td>-</td>
-                            </tr>
+                            <% } else if (donation["donation_status"].status === 1) { %>
+                                <td><%= donation["donation_status"].NGO_name %></td>
+                            <% } else if (donation["donation_status"].status === 2) { %>
+                                <td>NA</td>
+                            <% } %>
+                        </tr>
                         <%  i++; }); %>
                     </tbody>
             </table>
         </div>
         
-        <div class="icon">
-            <a href="/donate">
-                <i class="fa-solid fa-hands-praying"></i>
-            </a>
-        </div>
+        <% if (!user.isAdmin) { %>
+            <div class="icon">
+                <a href="/donate">
+                    <i class="fa-solid fa-hands-praying"></i>
+                </a>
+            </div>
+        <% } %>
     </div>
 
-    <%- include('./partials/footer.ejs') %>
+<%- include("./partials/footer.ejs") %>
     
-    <script>
-        const table = document.getElementById("toSortTable");
-        const input = document.getElementById("searchBar");
-
-        function sortTable(col, isDate) {
-            let rows, switching, i, x, y, dateX, dateY, shouldSwitch, dir, switchcount = 0;
-            switching = true;
-            dir = "asc"; 
-            while (switching) {
-                switching = false;
-                rows = table.rows;
-                for (i = 1; i < (rows.length - 1); i++) {
-                    shouldSwitch = false;
-                    x = rows[i].children[col];
-                    y = rows[i+1].children[col];
-                    if (isDate) {
-                        dateX = x.innerHTML.substring(6, 10)+"-"+x.innerHTML.substring(3, 5)+"-"+x.innerHTML.substring(0, 2);
-                        dateY = y.innerHTML.substring(6, 10)+"-"+y.innerHTML.substring(3, 5)+"-"+y.innerHTML.substring(0, 2);
-                    }
-                    if (dir == "asc") {
-                        if (isDate) {
-                            if (dateX > dateY) {
-                                shouldSwitch = true;
-                                break;
-                            } 
-                        } else {
-                            if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-                                shouldSwitch = true;
-                                break;
-                            }
-                        }
-                    } else if (dir == "desc") {
-                        if (isDate) {
-                            if (dateX < dateY) {
-                                shouldSwitch = true;
-                                break;
-                            }
-                        } else {
-                            if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-                                shouldSwitch = true;
-                                break;
-                            }
-                        }
-                    }
-                }
-                if (shouldSwitch) {
-                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-                    switching = true;
-                    switchcount ++; 
-                } else {
-                    if (switchcount == 0 && dir == "asc") {
-                        dir = "desc";
-                        switching = true;
-                    }
-                }
-            }
-            let symbol = document.getElementById(`col${col}`);
-            if (symbol.classList.contains("fa-sort-down") && dir == "asc") {
-                symbol.classList.replace("fa-sort-down", "fa-sort-up");
-            } else if (symbol.classList.contains("fa-sort-up") && dir == "desc") {
-                symbol.classList.replace("fa-sort-up", "fa-sort-down");
-            }
-        }
-
-        function filter(col) {
-            console.log(col);
-            let filter, tr, td, i, txtValue;
-            filter = input.value.toUpperCase();
-            tr = table.getElementsByTagName("tr");
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[col];
-                if (td) {
-                    txtValue = td.textContent || td.innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
-                }       
-            }
-        }
-
-        function dropdown(element) {
-            element.children[1].classList.toggle("show");
-        }
-
-        function fixedFilter(col, value) {
-            let tr, td, i, txtValue;
-            tr = table.getElementsByTagName("tr");
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[col];
-                if (td) {
-                    txtValue = td.textContent || td.innerText;
-                    if (txtValue.toUpperCase().indexOf(value.toUpperCase()) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
-                }       
-            }
-        }
-
-        function reset() {
-            tr = table.getElementsByTagName("tr");
-            for (i = 0; i < tr.length; i++) {
-                tr[i].style.display = "";      
-            }
-            sortTable(0, false);
-        }
-    </script>
+<script src="/js/script_table.js"></script>
 
 </body>
 </html>

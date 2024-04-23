@@ -94,13 +94,15 @@ async function geocode(address) {
 router.get("/donate", (req, res) => {
     console.log("[GET] `/donate` Current User Location: " + req.session.location);
     if (!req.session.userID) {
-        res.render("signUp.ejs", { error: null });
+        req.flash("error", "<a href='/signIn'>Log in</a> or <a href='/signUp'>create an account</a> to view protected content.")
+        res.redirect("/signUp");
     } else if (req.session.type === "ngo") {
+        req.flash("error", "Access requires user registration.");
         res.redirect("/");
     } else {
         const next = new Date();
         next.setDate(next.getDate() + 1);
-        res.render("donate.ejs", { user: req.session.userName, type: req.session.type, date: next.toISOString().slice(0, 10) });
+        res.render("donate.ejs", { user: req.session, date: next.toISOString().slice(0, 10) });
     }
 });
 
@@ -110,7 +112,7 @@ router.post("/donate", async (req, res) => {
         // find co-ordinates to given pickup address
         await geocode(req.body["pickupAddress"])
             .then((response) => {
-                // if req.body contains 'currLoc': this means co-ordinates are reliable
+                // if req.body contains "currLoc": this means co-ordinates are reliable
                 // else: this means address inside textarea is reliable
 
                 let newDonation = new Donation({
@@ -176,30 +178,27 @@ router.post("/donate", async (req, res) => {
                                             }
                                             j++;
                                         })
-                                        // removing the 'Devloper NGO' email
-                                        if (NGOemails.indexOf("a@a.a") !== -1) {
-                                            NGOemails.splice(NGOemails.indexOf("a@a.a"), 1);
-                                        }
                                         sendMail(NGOemails, newDonation);
+                                        req.flash("success", "Donation successful!");
                                         res.redirect("/");
                                     }).catch(error => {
                                         console.log("API Error:" + error);
-                                        res.render("donate.ejs", { user: req.session.userName, error: "Someting went wrong. Try again." });
+                                        res.render("donate.ejs", { user: req.session, error: "Someting went wrong. Try again." });
                                     });
                             }).catch(error => {
                                 console.log("Error retrieving NGO data: ", error);
-                                res.render("donate.ejs", { user: req.session.userName, error: "Someting went wrong. Try again." });
+                                res.render("donate.ejs", { user: req.session, error: "Someting went wrong. Try again." });
                             });
                     }).catch(error => {
                         console.log("Error saving donation: ", error);
-                        res.render("donate.ejs", { user: req.session.userName, error: "Someting went wrong. Try again." });
+                        res.render("donate.ejs", { user: req.session, error: "Someting went wrong. Try again." });
                     });
             }).catch(error => {
                 console.log("Error from Openstreetmap: ", error);
-                res.render("donate.ejs", { user: req.session.userName, error: "Someting went wrong. Try again." });
+                res.render("donate.ejs", { user: req.session, error: "Someting went wrong. Try again." });
             });
     } else {
-        res.render("donate.ejs", { user: req.session.userName, error: "Please enter valid date of donation" })
+        res.render("donate.ejs", { user: req.session, error: "Please enter valid date of donation" })
     }
 });
 

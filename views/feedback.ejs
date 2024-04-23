@@ -1,9 +1,11 @@
-<%- include('./partials/header.ejs') %>
+<%- include("./partials/header.ejs") %>
 
-    <link rel="stylesheet" href="./css/style_feedback.css">
-    <link rel="stylesheet" href="./css/style_form.css">
-    <link rel="stylesheet" href="./css/star.css">
+<link rel="stylesheet" href="./css/style_feedback.css">
+<link rel="stylesheet" href="./css/style_form.css">
+<link rel="stylesheet" href="./css/star.css">
    
+<%- include("./flash.ejs") %>
+
     <div class="main">
         <section class="Container">
             <div class="feedback">
@@ -17,13 +19,13 @@
                         <i class="fa fa-solid fa-user"></i> 
                         Name 
                     </label> 
-                    <input type="text" id="uname" name="uname" value="<%= locals.user || '' %>" required> 
+                    <input type="text" id="uname" name="uname" value="<%= locals.user.userName || '' %>" required> 
             
                     <label for="email_id"> 
                         <i class="fa fa-solid fa-envelope"></i> 
                         Email Address 
                     </label> 
-                    <input type="email" id="email_id" name="email" value="<%= locals.email || '' %>" required> 
+                    <input type="email" id="email_id" name="email" value="<%= locals.user.userID || '' %>" required> 
             
                     <label> 
                         <i class="fa-solid fa-face-smile"></i> 
@@ -92,7 +94,7 @@
         <% } %>
     </div>
 
-<%- include('./partials/footer.ejs') %>
+<%- include("./partials/footer.ejs") %>
 
 </body>
 </html>
