@@ -106,11 +106,11 @@ router.patch("/adminDashboard/ngo/:id", adminLoggedIn, async (req, res) => {
 // })
 
 // //view a particular  ngo profile
-router.get("/adminview/:id", adminLoggedIn, async (req, res) => {
+router.get("/adminView/ngo/:id", adminLoggedIn, async (req, res) => {
     try {
         let { id } = req.params;
         const ngoParticular = await NGO.findById(id);
-        res.render("adminView", { ngoParticular });
+        res.render("adminView.ejs", { ngoParticular, user: req.session });
     }
     catch (error) {
         console.log(error);
@@ -118,7 +118,7 @@ router.get("/adminview/:id", adminLoggedIn, async (req, res) => {
 })
 
 // //edit the ngo  details 
-router.get("/adminedit/:id", adminLoggedIn, async (req, res) => {
+router.get("/adminEdit/ngo/:id", adminLoggedIn, async (req, res) => {
     try {
         let { id } = req.params;
         const ngoParticular = await NGO.findById(id);

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Template</title>
+</head>
+<body>
+    <div>
+        <p>A donation was made with following details:</p>
+        <p><b>Donor</b>: <%= donorName %></p>
+        <p><b>Date of Donation</b>: <%= dateOfDonation %></p>
+        <p><b>Type of Donation</b>: <%= typeOfDonation %></p>
+        <% if (eventType) { %>
+            <p><b>Type of Event</b>: <%= eventType %></p>
+        <% } %>
+        <p><b>Pickup Address</b>: <%= pickupAddress %></p>
+        <br><br>
+        <p>Thanks,</p>
+        <p>Sevakrit Team</p>
+    </div>
+</body>
+</html>

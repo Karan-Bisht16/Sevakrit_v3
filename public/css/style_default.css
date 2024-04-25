@@ -185,8 +185,8 @@ footer>.container, .container>.row, .row>div {
     bottom: 30px;
     z-index: 10000;
     border-radius: 50%;
-    height: 130px;
-    width: 130px;
+    height: 75px;
+    width: 75px;
     background-color: var(--red);
 }
 
@@ -195,12 +195,18 @@ footer>.container, .container>.row, .row>div {
 }
 
 .admin-panel>i {
-    font-size: 60px;
+    font-size: 30px;
     position: relative;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     color: white;
+}
+
+div#chatbase-message-bubbles, iframe, #chatbase-bubble-button {
+    position: fixed;
+    left: 25px !important;
+    background-color: var(--red) !important;
 }
 
 @media (max-width: 485px) {
