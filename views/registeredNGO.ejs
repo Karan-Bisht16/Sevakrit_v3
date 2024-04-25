@@ -31,9 +31,7 @@
                 <thead>
                     <tr>
                         <th style="min-width: 80px; text-align: center;">S.No. &nbsp; <i id="col0" class="colIcon fa-solid fa-sort-down" onclick="sortTable(0, 'number', 0)"></i></th>
-                        <!-- <th>S.No.</th> -->
-                        <!-- <th>NGO Name</th> -->
-                        <th style="min-width: 130px;">NGO Name &nbsp; <i id="col1" class="colIcon fa-solid fa-sort-down" onclick="sortTable(1, 'text', 0)"></i></th>
+                        <th style="min-width: 170px;">NGO Name &nbsp; <i id="col1" class="colIcon fa-solid fa-sort-down" onclick="sortTable(1, 'text', 0)"></i></th>
                         <th style="min-width: 130px;">Registration No.</th>
                         <th>Email</th>
                         <th>Address</th>
@@ -43,10 +41,15 @@
                 </thead>
                 <tbody class="table-group-divider">
                     <%  let i=1; %>
-                    <% NGOData.forEach(NGO=>{ %>
+                    <% NGOData.forEach(NGO => { %>
                         <tr>
                             <td style="text-align: center;"><%= i %></td>
-                            <td><%= NGO["name"] %> &nbsp; </td>
+                            <td>
+                                <%= NGO["name"] %> 
+                                <% if (NGO["NGO_isVerified"]) { %>
+                                    <i class="fa-solid fa-square-check" style="color: #1d9bf0;"></i>
+                                <% } %>
+                            </td>
                             <td><%= NGO["NGO_registration_number"] %></td>
                             <td><%= NGO["email"] %></td>
                             <td><%= NGO["NGO_address"].humanReadableAddress %></td>
@@ -66,7 +69,7 @@
             </table>
         </div>
         
-        <% if (!(locals.type==="user" || locals.type==="ngo")) { %>
+        <% if (!locals.user || !locals.user.isAdmin) { %>
             <div class="icon">
                 <a href="/signUpNGO">
                     <i class="fa-solid fa-user-plus"></i>

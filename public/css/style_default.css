@@ -13,7 +13,7 @@ a {
 }
 
 body {
-    background-image: url("../images/background.png");
+    background-image: url("../images/img-background.png");
 }
 
 header {
@@ -190,7 +190,11 @@ footer>.container, .container>.row, .row>div {
     background-color: var(--red);
 }
 
-.admin-panel>a>i {
+.admin-panel:hover {
+    cursor: pointer;
+}
+
+.admin-panel>i {
     font-size: 60px;
     position: relative;
     top: 50%;

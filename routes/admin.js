@@ -1,6 +1,8 @@
 const express = require("express");
 const NGO = require("../models/ngo");
-const Admin = require('../models/admin')
+const User = require('../models/user');
+const Admin = require('../models/admin');
+const Review = require('../models/review');
 // const passport = require("passport");
 const { adminLoggedIn } = require("../loginMiddleware");
 
@@ -44,11 +46,24 @@ const router = express.Router()
 //show data to the dashboard
 router.get("/adminDashboard", adminLoggedIn, async (req, res) => {
     try {
-        let foundNGO = await NGO.find({}).sort({ _id: -1 })
-        res.render("adminDashboard.ejs", { user: req.session, foundNGO });
+        let NGOData = await NGO.find({});
+        let UserData = await User.find({});
+        let ReviewData = await Review.find({});
+        res.render("adminDashboard.ejs", { user: req.session, NGOData, UserData, ReviewData });
     }
     catch (error) {
         console.log(error)
+    }
+});
+
+router.patch("/adminDashboard/ngo/:id", adminLoggedIn, async (req, res) => {
+    let { id } = req.params;
+    try {
+        let priorValue = await NGO.findById(id);
+        await NGO.findByIdAndUpdate(id, { NGO_isVerified: !priorValue["NGO_isVerified"] });
+        res.send({ status: true });
+    } catch (error) {
+        res.send({ status: false });
     }
 });
 

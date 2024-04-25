@@ -120,7 +120,7 @@ router.post("/donate", async (req, res) => {
                     donar_email: req.session.userID,
                     date_of_donation: req.body["dateOfDonation"],
                     type_of_donation: req.body["donationType"],
-                    type_of_event: req.body["donationType"] === "Food" ? req.body["eventType"] : "",
+                    type_of_event: req.body["donationType"] === "Food" ? req.body["eventType"] : " ",
                     user_pickup_address: {
                         humanReadableAddress: req.body.currLoc ? req.body["addressCalc"] : req.body["pickupAddress"],
                         coordinates: req.body.currLoc ? JSON.parse(req.body["coordinates"]) : (req.body["coordinates"] === "" ? response : req.body["coordinates"]),

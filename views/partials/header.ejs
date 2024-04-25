@@ -46,20 +46,21 @@
                                     <div class="underline"></div>
                                 </a>
                             </li>
-                            <% if (!locals.user || locals.user.type !== "ngo") { %>
+                            <% if (!locals.user || (locals.user.type !== "ngo" && !locals.user.isAdmin)) { %>
                                 <li class="nav-item section">
                                     <a class="nav-link mainRoute" href="/donate">
                                         Donation
                                         <div class="underline"></div>
                                     </a>
                                 </li>
+                            <% } if (!locals.user || locals.user.type !== "ngo") { %>
                                 <li class="nav-item section">
                                     <a class="nav-link mainRoute" href="/registeredNGO">
                                         Registered NGOs
                                         <div class="underline"></div>
                                     </a>
                                 </li>
-                            <% } else if (locals.user && (!locals.user.type || locals.user.type === "ngo")) { %>
+                            <% } if (locals.user && (!locals.user.type || locals.user.type === "ngo" || locals.user.isAdmin)) { %>
                                 <li class="nav-item section">
                                     <a class="nav-link mainRoute" href="/nearbyDonations">
                                         Nearby Donations
@@ -152,7 +153,7 @@
     </header>
 
     <% if (locals.user && locals.user.isAdmin) { %>
-        <div class="admin-panel">
-            <a href="/adminDashboard"><i class="fa-solid fa-chart-column"></i></a>
+        <div class="admin-panel" onclick="location.href='/adminDashboard';">
+            <i class="fa-solid fa-chart-column"></i>
         </div>
      <% } %>

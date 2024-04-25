@@ -19,14 +19,23 @@
                         <i class="fa fa-solid fa-user"></i> 
                         Name 
                     </label> 
-                    <input type="text" id="uname" name="uname" value="<%= locals.user.userName || '' %>" required> 
-            
+
+                    <% if (locals.user) { %> 
+                        <input type="text" id="uname" name="uname" value="<%= locals.user.userName || '' %>" required> 
+                    <% } else { %>
+                        <input type="text" id="uname" name="uname" value="" required> 
+                    <% } %>
+
                     <label for="email_id"> 
                         <i class="fa fa-solid fa-envelope"></i> 
                         Email Address 
                     </label> 
-                    <input type="email" id="email_id" name="email" value="<%= locals.user.userID || '' %>" required> 
-            
+                    <% if (locals.user) { %> 
+                        <input type="email" id="email_id" name="email" value="<%= locals.user.userID || '' %>" required> 
+                    <% } else { %>
+                        <input type="email" id="email_id" name="email" value="" required> 
+                    <% } %>
+
                     <label> 
                         <i class="fa-solid fa-face-smile"></i> 
                         Are you satisfied with our service? 
