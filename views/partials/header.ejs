@@ -55,40 +55,41 @@
                                     <div class="underline"></div>
                                 </a>
                             </li>
-                            <% if (!locals.user || (locals.user.type !== "ngo" && !locals.user.isAdmin)) { %>
+                            <% if (!locals.user || (locals.user.type !=="ngo" && !locals.user.isAdmin)) { %>
                                 <li class="nav-item section">
                                     <a class="nav-link mainRoute" href="/donate">
                                         Donation
                                         <div class="underline"></div>
                                     </a>
                                 </li>
-                            <% } if (!locals.user || locals.user.type !== "ngo") { %>
-                                <li class="nav-item section">
-                                    <a class="nav-link mainRoute" href="/registeredNGO">
-                                        Registered NGOs
-                                        <div class="underline"></div>
-                                    </a>
-                                </li>
-                            <% } if (locals.user && (!locals.user.type || locals.user.type === "ngo" || locals.user.isAdmin)) { %>
-                                <li class="nav-item section">
-                                    <a class="nav-link mainRoute" href="/nearbyDonations">
-                                        Nearby Donations
-                                        <div class="underline"></div>
-                                    </a>
-                                </li>
-                            <% } %>
-                            <li class="nav-item section">
-                                <a class="nav-link mainRoute" href="/feedback">
-                                    Feedback
-                                    <div class="underline"></div>
-                                </a>
-                            </li>
-                            <li class="nav-item section">
-                                <a class="nav-link mainRoute" href="/aboutUs">
-                                    About us
-                                    <div class="underline"></div>
-                                </a>
-                            </li>
+                                <% } if (!locals.user || locals.user.type !=="ngo" ) { %>
+                                    <li class="nav-item section">
+                                        <a class="nav-link mainRoute" href="/registeredNGO">
+                                            Registered NGOs
+                                            <div class="underline"></div>
+                                        </a>
+                                    </li>
+                                    <% } if (locals.user && (!locals.user.type || locals.user.type==="ngo" ||
+                                        locals.user.isAdmin)) { %>
+                                        <li class="nav-item section">
+                                            <a class="nav-link mainRoute" href="/nearbyDonations">
+                                                Nearby Donations
+                                                <div class="underline"></div>
+                                            </a>
+                                        </li>
+                                        <% } %>
+                                            <li class="nav-item section">
+                                                <a class="nav-link mainRoute" href="/feedback">
+                                                    Feedback
+                                                    <div class="underline"></div>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item section">
+                                                <a class="nav-link mainRoute" href="/aboutUs">
+                                                    About us
+                                                    <div class="underline"></div>
+                                                </a>
+                                            </li>
                         </ul>
                     </div>
                 </div>
@@ -107,62 +108,74 @@
                 style="display: flex; gap: 25px; align-self: center; font-weight: bolder; padding-right: 5px;">
                 <% if (!locals.user) { %>
                     <a class="nav-link profile_data" href="/signIn"> Sign in</a>
-                    <a class="nav-link profile_data" href="/signUp" style="background-color: #a40b00; border: 1px solid whitesmoke; border-radius: 9999px; padding: 0px 17px;">
+                    <a class="nav-link profile_data" href="/signUp"
+                        style="background-color: #a40b00; border: 1px solid whitesmoke; border-radius: 9999px; padding: 0px 17px;">
                         Sign up
                     </a>
                     <div class="nav-item sign_in_up" style="display: none; float: right;">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: white;">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false" style="color: white;">
                             <i class="fa-solid fa-user profile" style="background-color: inherit; color: white"></i>
                         </a>
                         <ul class="dropdown-menu">
                             <li style="padding-bottom: 5px;"><a class="dropdown-item" href="/signIn"> Sign in</a></li>
-                            <li style="padding-top: 5px; border-top: 1px solid black;"><a class="dropdown-item" href="/signUp"> Sign up</a></li>
+                            <li style="padding-top: 5px; border-top: 1px solid black;"><a class="dropdown-item"
+                                    href="/signUp"> Sign up</a></li>
                         </ul>
                     </div>
-                <% } else { 
-                    if (locals.user.type === "user") { %>
+                    <% } else { if (locals.user.type==="user" ) { %>
                         <a class="nav-link profile_data" href="/profile/user/<%=locals.user.userName%>">
                             <%= locals.user.userName.split(" ")[0] %> 
                         </a>
-                    <% } else if (locals.user.type === "ngo") { %>
-                        <a class=" nav-link profile_data" href="/profile/ngo/<%=locals.user.userName%>">
-                            <%= locals.user.userName.split(" ")[0] %> 
+                    <% } else if (locals.user.type === " ngo") { %>
+                                <a class=" nav-link profile_data" href="/profile/ngo/<%=locals.user.userName%>">
+                                    <%= locals.user.userName.split(" ")[0] %> 
                         </a>
                     <% } %>
                     <div class=" nav-item">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: white;">
-                            <% if (locals.user.isAdmin) { %>
-                                <i class="fa-solid fa-user-tie" style="background-color: inherit; color: white"></i>
-                            <% } else { %>
-                                <i class="fa-solid fa-user profile" style="background-color: inherit; color: white"></i>
-                            <% } %>
-                        </a>
+                                        <a class="nav-link dropdown-toggle" href="#" role="button"
+                                            data-bs-toggle="dropdown" aria-expanded="false" style="color: white;">
+                                            <% if (locals.user.isAdmin) { %>
+                                                <i class="fa-solid fa-user-tie"
+                                                    style="background-color: inherit; color: white"></i>
+                                                <% } else { %>
+                                                    <i class="fa-solid fa-user profile"
+                                                        style="background-color: inherit; color: white"></i>
+                                                    <% } %>
+                                        </a>
 
-                        <ul class="dropdown-menu">
-                            <% if (locals.user.type === "user") { %>
-                                <li style="padding-bottom: 5px; border-bottom: 1px solid black; display: none; margin-bottom: 5px;" class="hidden_profile">
-                                    <a class="dropdown-item" href="/profile/user/<%=locals.user.userName%>">
-                                        <%= locals.user.userName.split(" ")[0] %> 
+                                        <ul class="dropdown-menu">
+                                            <% if (locals.user.type==="user" ) { %>
+                                                <li style="padding-bottom: 5px; border-bottom: 1px solid black; display: none; margin-bottom: 5px;"
+                                                    class="hidden_profile">
+                                                    <a class="dropdown-item"
+                                                        href="/profile/user/<%=locals.user.userName%>">
+                                                        <%= locals.user.userName.split(" ")[0] %> 
                                     </a>
                                 </li>
-                            <% } else if (locals.user.type === "ngo") { %>
-                                <li style="padding-bottom: 5px; border-bottom: 1px solid black; display: none; margin-bottom: 5px;" class="hidden_profile">
-                                    <a class="dropdown-item" href="/profile/ngo/<%=locals.user.userName%>">
-                                        <%= locals.user.userName.split(" ")[0] %>
+                            <% } else if (locals.user.type === " ngo") { %>
+                                                <li style="padding-bottom: 5px; border-bottom: 1px solid black; display: none; margin-bottom: 5px;"
+                                                    class="hidden_profile">
+                                                    <a class="dropdown-item"
+                                                        href="/profile/ngo/<%=locals.user.userName%>">
+                                                        <%= locals.user.userName.split(" ")[0] %>
                                     </a>
                                 </li>
                             <% } %>
-                            <li style="padding-bottom: 5px;"><a class="dropdown-item" href="/edit-Profile"> Edit Profile</a></li>
-                            <li style="padding-top: 5px; border-top: 1px solid black;"><a class="dropdown-item" href="/logout"> Logout</a></li>
-                        </ul>
-                    </div>
-                <% } %>
-            </li>
+                            <li style=" padding-bottom: 5px;"><a class="dropdown-item" href="/edit-Profile"> Edit
+                                                                Profile</a>
+                                                </li>
+                                                <li style="padding-top: 5px; border-top: 1px solid black;"><a
+                                                        class="dropdown-item" href="/logout"> Logout</a></li>
+                                        </ul>
         </div>
+        <% } %>
+            </li>
+            </div>
     </header>
 
     <% if (locals.user && locals.user.isAdmin) { %>
         <div class="admin-panel" onclick="location.href='/adminDashboard';">
             <i class="fa-solid fa-chart-column"></i>
         </div>
-     <% } %>
+        <% } %>
