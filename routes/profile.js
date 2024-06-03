@@ -81,7 +81,6 @@ router.get("/profile/ngo/:ngoname", ngoLoggedIn, async (req, res) => {
 
 router.post("/profile/ngo/:ngoname", ngoLoggedIn, async (req, res) => {
     req.session.location = req.body["latitude"] + "_" + req.body["longitude"];
-    console.log("[POST] `/`      Current User Location: " + req.session.location);
     req.session.nearbyNGOs = [];
     try {
         let resultsDonation = await Donation.find({ donation_status: { status: 0, NGO_name: "" } })

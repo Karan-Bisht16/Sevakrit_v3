@@ -23,9 +23,7 @@ cron.schedule("0 20 * * *", () => {
 });
 
 router.get("/", async (req, res) => {
-    console.log(req.session);
     req.session.location = req.session.location || "";
-    console.log("[GET]  `/`      Current User Location: " + req.session.location);
     if (req.session.userName && req.session.userID && req.session.type) {
         res.render("home.ejs", { user: req.session });
     } else {
@@ -35,7 +33,6 @@ router.get("/", async (req, res) => {
 
 router.post("/", (req, res) => {
     req.session.location = req.body["latitude"] + "_" + req.body["longitude"];
-    console.log("[POST] `/`      Current User Location: " + req.session.location);
     req.session.nearbyNGOs = [];
     // to find all nearby ngo
     NGO.find()

@@ -75,9 +75,11 @@ button.btn.btn-primary.btn-small {
     .main {
         padding: 0;
     }
+
     .row {
         display: none;
     }
+
     .table-toggler {
         position: fixed;
         bottom: 0px;
@@ -87,10 +89,12 @@ button.btn.btn-primary.btn-small {
         background-color: #2b3035;
         justify-content: space-evenly;
     }
-    .table-toggler > i{
+
+    .table-toggler>i {
         color: white;
         font-size: 24px;
     }
+
     .content.table-responsive {
         padding-bottom: 500px;
     }
@@ -100,99 +104,26 @@ button.btn.btn-primary.btn-small {
     section.container>p {
         margin: 5px 20px;
     }
+
     .content {
         padding: 20px 20px 100px 20px;
     }
+
     .table {
         display: block;
         overflow-x: auto;
         white-space: nowrap;
     }
+
     .hidden {
         display: none;
     }
+
     .card-body {
         height: 125px;
     }
+
     .icon-background {
         display: none;
     }
 }
-
-/* .head {
-    margin-top: 50px;
-}
-
-body {
-    background: rgb(201, 252, 240);
-}
-
-.contain {
-    display: flex;
-
-}
-
-.logo span {
-    font-weight: bold;
-    padding-left: 15px;
-
-}
-
-.logo {
-    text-align: center;
-    display: flex;
-    margin: 15px 15px;
-}
-
-.main {
-
-    position: relative;
-    padding: 20px;
-    width: 100%;
-}
-
-.main-top {
-    display: flex;
-    right: 0;
-    width: 100%;
-}
-
-.card {
-    width: 25%;
-    margin: 10px;
-    background: whitesmoke;
-    text-align: center;
-    border-radius: 20px;
-    padding: 10px;
-    box-shadow: 0 20px 35px rgb(0, 0, 0, 0.2);
-}
-
-.card h3 {
-    text-transform: capitalize;
-    margin: 10px;
-}
-
-.words {
-    font-size: small;
-}
-
-.check {
-    color: white;
-    padding: 7px 15px;
-    background: orangered;
-    border-radius: 4px;
-    box-shadow: 0 4px 4px rgb(0, 0, 0, 0.4);
-    font-size: 17px;
-}
-
-.check:hover {
-    background: whitesmoke;
-    color: orangered;
-    cursor: pointer;
-}
-
-.main-skills {
-    display: flex;
-    margin-top: 20px;
-    padding: 2px;
-} */

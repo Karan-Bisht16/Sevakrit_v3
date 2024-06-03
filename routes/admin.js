@@ -3,47 +3,11 @@ const NGO = require("../models/ngo");
 const User = require('../models/user');
 const Admin = require('../models/admin');
 const Review = require('../models/review');
-// const passport = require("passport");
 const { adminLoggedIn } = require("../loginMiddleware");
 
 const router = express.Router()
 
-// admin signup
-// router.get("/admin-register", (req, res) => {
-//     res.render("adminSignup");
-// })
-
-// router.post("/admin-register", async (req, res) => {
-//     let { username, password, email, role, gender } = req.body
-//     let admin = new Admin({ username, email, gender, role })
-//     let newAdmin = await Admin.register(admin, password)
-//     res.redirect("/admin_login");
-// })
-
-//admin login
-// router.get("/admin_login", (req, res) => {
-//     res.render("adminLogin")
-// })
-
-//admin post request for login if its fail it will redirect too same login page
-// and if it successs than you automatically go too the home router
-// router.post('/admin_login',
-//     passport.authenticate('local', { failureRedirect: '/admin_login', failureMessage: true }),
-//     function (req, res) {
-//         req.flash("success", "Welcome back sir")
-//         res.redirect("/adminHome");
-//     }
-// );
-
-//logout
-// router.get('/admin_logout', function (req, res, next) {
-//     req.logout(() => {
-//         req.flash("success", "Logout successfully")
-//         res.redirect('/admin_login');
-//     });
-// });
-
-//show data to the dashboard
+// show data to the dashboard
 router.get("/adminDashboard", adminLoggedIn, async (req, res) => {
     try {
         let NGOData = await NGO.find({});
@@ -67,7 +31,77 @@ router.patch("/adminDashboard/ngo/:id", adminLoggedIn, async (req, res) => {
     }
 });
 
-//show data to the Home
+// view a particular ngo
+router.get("/adminView/ngo/:id", adminLoggedIn, async (req, res) => {
+    try {
+        let { id } = req.params;
+        const ngoParticular = await NGO.findById(id);
+        res.render("adminView.ejs", { ngoParticular, user: req.session });
+    }
+    catch (error) {
+        console.log(error);
+    }
+})
+
+// edit details of an ngo 
+router.get("/adminEdit/ngo/:id", adminLoggedIn, async (req, res) => {
+    try {
+        let { id } = req.params;
+        const ngoParticular = await NGO.findById(id);
+        res.render("adminEdit", { ngoParticular, user: req.session });
+    }
+    catch (error) {
+        console.log(error);
+    }
+})
+
+router.patch("/adminEdit/:id", adminLoggedIn, async (req, res) => {
+    try {
+        let { id } = req.params;
+        let ngo = await NGO.findById(id);
+        await NGO.findByIdAndUpdate(id, {
+            name: req.body.name,
+            email: req.body.email,
+            NGO_registration_number: req.body.NGO_registration_number,
+            NGO_address: {
+                humanReadableAddress: req.body.NGO_address,
+                coordinates: {
+                    latitude: ngo.NGO_address.coordinates.latitude,
+                    longitude: ngo.NGO_address.coordinates.longitude
+                }
+            },
+            NGO_range: req.body.NGO_range,
+            NGO_date_of_joining: req.body.NGO_date_of_joining,
+            NGO_sectors: req.body.NGO_sectors
+        });
+        req.flash("success", "Successfully updated profile! <a href='/adminDashboard'>Return to dashboard</a>.");
+        res.redirect(`/adminView/ngo/${id}`)
+    }
+    catch (error) {
+        console.log("Error updating NGO details [by admin]:", error);
+        req.flash("error", "Error updating NGO. <a href='/adminDashboard'>Return to dashboard</a>.");
+        res.redirect("/adminDashboard");
+    }
+})
+
+// delete record of an ngo
+router.delete("/adminEdit/:id", adminLoggedIn, async (req, res) => {
+    try {
+        let { id } = req.params;
+        await NGO.findByIdAndDelete(id);
+        req.flash("success", "Successfully deleted profile! <a href='/adminDashboard'>Return to dashboard</a>.");
+        res.redirect("/adminDashboard");
+    }
+    catch (error) {
+        console.log("Error deleting NGO [by admin]:", error);
+        req.flash("error", "Error deleting NGO. <a href='/adminDashboard'>Return to dashboard</a>.");
+        res.redirect("/adminDashboard");
+    }
+})
+
+module.exports = router;
+
+// show data to the Home
 // router.get("/adminHome", adminLoggedIn, async (req, res) => {
 //     try {
 //         let user = req.user.username;
@@ -95,9 +129,7 @@ router.patch("/adminDashboard/ngo/:id", adminLoggedIn, async (req, res) => {
 //         NGO_sectors: req.body.NGO_sectors
 //     });
 //     try {
-
 //         await NGO.create(newNgo)
-
 //         res.redirect("/adminDashboard")
 //     }
 //     catch (error) {
@@ -105,61 +137,7 @@ router.patch("/adminDashboard/ngo/:id", adminLoggedIn, async (req, res) => {
 //     }
 // })
 
-// //view a particular  ngo profile
-router.get("/adminView/ngo/:id", adminLoggedIn, async (req, res) => {
-    try {
-        let { id } = req.params;
-        const ngoParticular = await NGO.findById(id);
-        res.render("adminView.ejs", { ngoParticular, user: req.session });
-    }
-    catch (error) {
-        console.log(error);
-    }
-})
-
-// //edit the ngo  details 
-router.get("/adminEdit/ngo/:id", adminLoggedIn, async (req, res) => {
-    try {
-        let { id } = req.params;
-        const ngoParticular = await NGO.findById(id);
-        res.render("adminEdit", { ngoParticular });
-    }
-    catch (error) {
-        console.log(error);
-    }
-})
-
-// router.patch("/adminedit/:id", isLoggedIn, async (req, res) => {
-//     try {
-//         await NGO.findByIdAndUpdate(req.params.id, {
-//             name: req.body.name,
-//             email: req.body.email,
-//             NGO_registration_number: req.body.NGO_registration_number,
-//             NGO_address: req.body.NGO_address,
-//             NGO_range: req.body.NGO_range,
-//             NGO_date_of_joining: req.body.NGO_date_of_joining,
-//             NGO_sectors: req.body.NGO_sectors
-//         });
-//         res.redirect(`/adminedit/${req.params.id}`)
-//     }
-//     catch (error) {
-//         console.log(error);
-//     }
-// })
-
-// //delete a ngo data which are not give the required documnents 
-// router.delete("/adminedit/:id", isLoggedIn, async (req, res) => {
-//     try {
-//         let { id } = req.params;
-//         await NGO.findByIdAndDelete(id)
-//         res.redirect("/adminDashboard")
-//     }
-//     catch (error) {
-//         console.log(error)
-//     }
-// })
-
-// //search  for ngo by name
+// search  for ngo by name
 // router.post("/search", async (req, res) => {
 //     try {
 //         let raj = req.body.searchTerm.trim()
@@ -177,5 +155,3 @@ router.get("/adminEdit/ngo/:id", adminLoggedIn, async (req, res) => {
 //         console.log(e);
 //     }
 // })
-
-module.exports = router

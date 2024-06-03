@@ -19,7 +19,6 @@ const transporter = nodemailer.createTransport({
     }
 });
 function sendMail(senderEmails, donationData) {
-    // console.log(senderEmails);
     let first =
         `
             A donation was made with following details: <br> 
@@ -92,7 +91,6 @@ async function geocode(address) {
 }
 
 router.get("/donate", (req, res) => {
-    console.log("[GET] `/donate` Current User Location: " + req.session.location);
     if (!req.session.userID) {
         req.flash("error", "<a href='/signIn'>Log in</a> or <a href='/signUp'>create an account</a> to view protected content.")
         res.redirect("/signUp");

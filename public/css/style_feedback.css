@@ -1,4 +1,4 @@
-/* @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");  */
+/* @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap"); */
 :root {
     --red: #da291c;
     --dark-red: #a40b00;
@@ -33,12 +33,7 @@ body {
     font-family: 'Poppins', sans-serif;
 }
 
-.textup {
-    text-align: center;
-    color: var(--vibrant-green);
-    font-weight: 700;
-    font-size: 20px;
-}
+
 
 i {
     margin-right: 3px;
@@ -57,45 +52,13 @@ label {
     font-weight: 600;
 }
 
-.radio-group {
-    display: flex;
-}
 
-.radio-group>label {
-    margin: 0 0 0 28px;
-}
 
-input[type="radio"] {
-    margin: 0px !important;
-}
 
-.ratings {
-    height: 40px;
-    display: flex;
-    justify-content: space-between;
-}
 
-label[for="star"] {
-    font-size: 24px;
-    font-weight: bolder;
-}
 
-.starability-basic {
-    margin: 5px 5px 0 0;
-}
 
-input, textarea {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 12px;
-    box-sizing: border-box;
-    border-radius: 10px;
-}
 
-#floatingTextarea2 {
-    height: 100px;
-    margin: 10px 0 0 0;
-}
 
 button {
     background-color: var(--light-green);
@@ -108,11 +71,3 @@ button {
     transition: .2s linear;
 }
 
-.card-header {
-    font-size: 40px;
-    font-weight: 400;
-    background-color: var(--red);
-    color: rgb(245, 245, 245);
-    border: 5px solid var(--dark-red);
-    border-width: 5px 0;
-}

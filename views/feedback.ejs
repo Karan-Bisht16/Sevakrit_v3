@@ -1,43 +1,40 @@
 <%- include("./partials/header.ejs") %>
 
-<link rel="stylesheet" href="./css/style_feedback.css">
 <link rel="stylesheet" href="./css/style_form.css">
-<link rel="stylesheet" href="./css/star.css">
+<link rel="stylesheet" href="./css/style_star.css">
    
 <%- include("./flash.ejs") %>
 
     <div class="main">
         <section class="Container">
             <div class="feedback">
+                <h3 class="heading">Feedback Form</h3>
                 <div class="textup"> 
                     <i class="fa fa-solid fa-clock"></i> 
                     It only takes two minutes!! 
                 </div>
-                <h1 class="heading">Feedback Form</h1>
                 <form action="/feedback" method="POST">
                     <label for="uname"> 
-                        <i class="fa fa-solid fa-user"></i> 
-                        Name 
+                        Name:
                     </label> 
 
                     <% if (locals.user) { %> 
                         <input type="text" id="uname" name="uname" value="<%= locals.user.userName || '' %>" required> 
                     <% } else { %>
-                        <input type="text" id="uname" name="uname" value="" required> 
+                        <input type="text" id="uname" name="uname" value="" placeholder="Enter your name" required> 
                     <% } %>
 
                     <label for="email_id"> 
-                        <i class="fa fa-solid fa-envelope"></i> 
-                        Email Address 
+                        Email:
                     </label> 
                     <% if (locals.user) { %> 
                         <input type="email" id="email_id" name="email" value="<%= locals.user.userID || '' %>" required> 
                     <% } else { %>
-                        <input type="email" id="email_id" name="email" value="" required> 
+                        <input type="email" id="email_id" name="email" value="" placeholder="Enter your e-mail" required> 
                     <% } %>
 
-                    <label> 
-                        <i class="fa-solid fa-face-smile"></i> 
+                    <label style="margin-top: 8px;"> 
+                        <i class="fa-solid fa-face-smile" style="font-size: 17px;"></i> 
                         Are you satisfied with our service? 
                     </label> 
                     <div class="radio-group"> 
@@ -65,17 +62,14 @@
                         </fieldset>
                     </div>
             
-                    <br>
-                    <label for="floatingTextarea2" style="margin: 0;"> 
-                        <i class="fa-solid fa-comments" style="margin-right: 3px;"></i> 
+                    <label for="floatingTextarea2" style="margin: 8px 0 0 0;"> 
+                        <i class="fa-solid fa-comments" style="margin-right: 3px; font-size: 16px;"></i> 
                         Write your suggestion: 
                     </label> 
                     <div class="form-floating">
                         <textarea class="form-control" name="comment" placeholder="Leave a comment here" id="floatingTextarea2" rows="4" cols="10" required></textarea>
-                        <label for="floatingTextarea2">Write here </label>
                       </div>
-                      <br>
-                    <button  class="button btn btn-primary " type="submit">Add feedback</button>
+                    <button class="button btn btn-primary" type="submit" style="margin-top: 8px;">Add feedback</button>
                 </form>
 
             </div>

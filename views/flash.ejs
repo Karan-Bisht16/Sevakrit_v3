@@ -9,7 +9,8 @@
     }
 
     /* .alert will select another alert in editProfile.ejs */
-    .alert-success, .alert-danger {
+    .alert-success,
+    .alert-danger {
         width: 40%;
         left: 50%;
         height: 75px;
@@ -51,8 +52,13 @@
     }
 
     @keyframes expire {
-        from {width: 100%;}
-        to {width: 0;}
+        from {
+            width: 100%;
+        }
+
+        to {
+            width: 0;
+        }
     }
 
     .flash-underline {
@@ -63,15 +69,21 @@
     }
 
     @media (max-width: 1100px) {
-        .alert-success, .alert-danger {
+
+        .alert-success,
+        .alert-danger {
             width: 65%;
         }
     }
+
     @media (max-width: 750px) {
-        .alert-success, .alert-danger {
+
+        .alert-success,
+        .alert-danger {
             width: 310px;
             height: 105px;
         }
+
         .flash-underline {
             margin-top: 18px;
         }
