@@ -31,6 +31,8 @@ const mongoStore = MongoStore.create({
     mongoUrl: process.env.MONGODB_URI,
     collectionName: "sessions",
     mongooseConnection: mongoose.connection,
+    ttl: 365 * 24 * 60 * 60,
+    autoRemove: 'native'
 });
 
 app.use(session({
