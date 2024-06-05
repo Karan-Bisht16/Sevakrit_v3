@@ -64,6 +64,7 @@
                         <th style="min-width: 200px;">Pickup Address</th>
                         <th style="min-width: 155px;">Approx. Distance &nbsp; <i id="col5" class="colIcon fa-solid fa-sort-down" onclick="sortTable(5, 'number', 2)"></i></th>
                         <th style="min-width: 230px;">Estimated Duration (via Car) &nbsp; <i id="col6" class="colIcon fa-solid fa-sort-down" onclick="sortTable(6, 'number', 3)"></i></th>
+                        <th style="min-width: 50px;">Action</th>
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">
@@ -92,10 +93,49 @@
                         <td style="text-align: center;"><%= response["distances"][0][i-1]/1000 %> km</td>
 
                         <td style="text-align: center;"><%= Math.round(response["durations"][0][i-1]/60) %> min</td>
+
+                        <td>
+                            <% if (donation["donation_status"].status == 0) { %>
+                                <button type="button" class="accept-donation-btn btn btn-danger" data-bs-toggle="modal" 
+                                    data-bs-target="#acceptDonationModal" value="<%= donation["_id"] %>" onclick="acceptDonationModal(this)">
+                                    <i class="fa-solid fa-hand-pointer"></i>
+                                </button>
+                            <% } else { %>
+                                <button type="button" class="btn btn-primary">
+                                    <i class="fa-solid fa-check"></i>
+                                </button>
+                            <% } %>
+                        </td>
                     </tr>
                     <% i++; }); %>
                 </tbody>
             </table>
+        </div>
+    </div>
+
+    <div class="modal fade" id="acceptDonationModal" tabindex="-1" aria-labelledby="acceptDonationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5 fw-bold" id="acceptDonationModalLabel">Accept Donation</h1>
+                    <button id="accept-donation-close-btn" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    You are about to confirm the selection of this donation. 
+                    <br>
+                    <span style="color: red;">This action is irreversible.</span> 
+                    <br>
+                    As per our terms and conditions, you are obliged to receive this donation from the user within the given timeframe. 
+                    <br>
+                    Failure to do so may result in a ban from the platform. 
+                    <br>
+                    Please be certain before proceeding.
+                </div>
+                <div class="modal-footer" style="border: none;">
+                    <button type="button" class="secondary-toggle btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button id="accept-donation" type="submit" class="btn btn-primary" onclick="acceptDonation(this)">Accept</button>
+                </div>
+            </div>
         </div>
     </div>
 

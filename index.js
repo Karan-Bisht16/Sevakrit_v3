@@ -38,8 +38,11 @@ const mongoStore = MongoStore.create({
 app.use(session({
     secret: process.env.SessionSecret,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     store: mongoStore,
+    cookie: { 
+        maxAge: 365 * 24 * 60 * 60 * 1000
+    }
 }));
 
 app.use(flash());
@@ -79,6 +82,7 @@ app.get("/logout", (req, res) => {
             console.error("Session destruction error:", err);
             return;
         }
+        res.clearCookie("connect.sid");
         res.redirect("/");
     });
 })

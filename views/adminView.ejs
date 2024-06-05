@@ -18,7 +18,7 @@
             width: 100%;
         }
 
-        .col {
+        .col:not(footer .col) {
             min-width: 300px;
         }
     }
@@ -27,92 +27,94 @@
 <%- include("./partials/header") %>
 <%- include("./flash.ejs") %>
 
-    <body>
-        <div class="contain">
-            <%-include('./partials/adminSidebar')%>
-                <section class="main">
-                    <div class="main-top">
-                        <h1 style="font-weight: bolder;">
+    <div class="contain">
+        <%-include('./partials/adminSidebar')%>
+            <section class="main">
+                <div class="main-top">
+                    <h1 style="font-weight: bolder;">
+                        <%= ngoParticular.name %>
+                    </h1>
+                </div>
+
+                <a href="/" class="float-end btn btn-sm btn-outline-secondary">+New Ngo</a>
+                <hr>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/adminDashboard">Dashboard</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">
                             <%= ngoParticular.name %>
-                        </h1>
-                    </div>
-
-                    <a href="/" class="float-end btn btn-sm btn-outline-secondary">+New Ngo</a>
-                    <hr>
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/adminDashboard">Dashboard</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">
+                        </li>
+                    </ol>
+                </nav>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col"> <b>Name:</b></div>
+                            <div class="col">
                                 <%= ngoParticular.name %>
-                            </li>
-                        </ol>
-                    </nav>
-                    <ul class="list-group">
-                        <li class="list-group-item">
-                            <div class="row">
-                                <div class="col"> <b>Name:</b></div>
-                                <div class="col">
-                                    <%= ngoParticular.name %>
-                                </div>
                             </div>
-                        </li>
+                        </div>
+                    </li>
 
-                        <li class="list-group-item">
-                            <div class="row">
-                                <div class="col"> <b>Sector:</b></div>
-                                <div class="col" style="min-width: 200px;">
-                                    <%= ngoParticular.NGO_sectors %>
-                                </div>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col"> <b>Sector:</b></div>
+                            <div class="col" style="min-width: 200px;">
+                                <%= ngoParticular.NGO_sectors %>
                             </div>
-                        </li>
+                        </div>
+                    </li>
 
-                        <li class="list-group-item">
-                            <div class="row">
-                                <div class="col"> <b>Email:</b></div>
-                                <div class="col">
-                                    <%= ngoParticular.email %>
-                                </div>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col"> <b>Email:</b></div>
+                            <div class="col">
+                                <%= ngoParticular.email %>
                             </div>
-                        </li>
+                        </div>
+                    </li>
 
-                        <li class="list-group-item">
-                            <div class="row">
-                                <div class="col"> <b>NGO registration number:</b></div>
-                                <div class="col">
-                                    <%= ngoParticular.NGO_registration_number %>
-                                </div>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col"> <b>NGO registration number:</b></div>
+                            <div class="col">
+                                <%= ngoParticular.NGO_registration_number %>
                             </div>
-                        </li>
+                        </div>
+                    </li>
 
-                        <li class="list-group-item">
-                            <div class="row">
-                                <div class="col"> <b>NGO address:</b></div>
-                                <div class="col" style="min-width: 200px;">
-                                    <%= ngoParticular.NGO_address.humanReadableAddress %>
-                                </div>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col"> <b>NGO address:</b></div>
+                            <div class="col" style="min-width: 200px;">
+                                <%= ngoParticular.NGO_address.humanReadableAddress %>
                             </div>
-                        </li>
+                        </div>
+                    </li>
 
-                        <li class="list-group-item">
-                            <div class="row">
-                                <div class="col"> <b>NGO date of joining:</b></div>
-                                <div class="col">
-                                    <%= ngoParticular.NGO_date_of_joining %>
-                                </div>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col"> <b>NGO date of joining:</b></div>
+                            <div class="col">
+                                <%= ngoParticular.NGO_date_of_joining %>
                             </div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="row">
-                                <div class="col"> <b>NGO range:</b></div>
-                                <div class="col">
-                                    <%= ngoParticular.NGO_range %>
-                                </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col"> <b>NGO range:</b></div>
+                            <div class="col">
+                                <%= ngoParticular.NGO_range %>
                             </div>
-                        </li>
-                    </ul>
-                    <a href="/adminDashboard" style="text-decoration: none; margin-top: 10px;"
-                        class="btn btn-primary">Back</a>
-                </section>
-        </div>
+                        </div>
+                    </li>
+                </ul>
+                <a href="/adminDashboard" style="text-decoration: none; margin-top: 10px;"
+                    class="btn btn-primary">Back</a>
+            </section>
+    </div>
 
 <%- include("./partials/footer.ejs") %>
+
+</body>
+</html>

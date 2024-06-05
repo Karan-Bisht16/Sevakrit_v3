@@ -53,7 +53,6 @@ const customIconClothes = L.divIcon({
 async function sendPostionToServer(object) {
     // to get current URL
     const currentURL = window.location.href;
-    console.log(currentURL);
     try {
         // post request to server with current location
         const response = await fetch(currentURL, {
@@ -130,3 +129,43 @@ const originalPosBtn = document.querySelector("#originalPosition");
 originalPosBtn.addEventListener("click", () => {
     map.setView([lat, lng]);
 });
+
+let confirmationButton = document.body;
+const acceptDonationModalElement = document.getElementById("acceptDonationModal");
+acceptDonationModalElement.addEventListener("shown.bs.modal", function () {
+    confirmationButton.focus();
+});
+function acceptDonationModal(buttonElement) {
+    buttonElement.setAttribute("data-bs-target", "#acceptDonationModal");
+    buttonElement.click();
+    confirmationButton = document.getElementById("accept-donation");
+    confirmationButton.setAttribute("value", buttonElement.getAttribute("value"));
+}
+async function acceptDonation(buttonElement) {
+    let currentURL = window.location.origin + "/profile/ngo/accept-donation";
+    try {
+        const response = await fetch(currentURL, {
+            method: "PUT",
+            headers: {
+                "Accept": "application/json, text/plain, */*",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                donationID: buttonElement.getAttribute("value")
+            })
+        });
+        if (!response.ok && !response.status === 200) {
+            alert("Network error. Please refresh.");
+        } else {
+            document.getElementById("accept-donation-close-btn").click();
+            let filterString = "button.accept-donation-btn[value='" + buttonElement.getAttribute("value") + "']";
+            const parentElement = document.querySelector(filterString).parentNode;
+            parentElement.innerHTML = `
+                <button type="button" class="btn btn-primary">
+                    <i class="fa-solid fa-check"></i>
+                </button>`;
+        }
+    } catch (error) {
+        console.log("Error in /accept-donation:", error);
+    }
+}

@@ -116,15 +116,15 @@
                     </div>
                 <% } else { 
                     if (locals.user.type==="user" ) { %>
-                    <a class="nav-link profile_data" href="/profile/user/<%=locals.user.userName%>">
-                        <%= locals.user.userName.split(" ")[0] %> 
-                    </a>
-                    <% } else if (locals.user.type === " ngo") { %>
-                                <a class=" nav-link profile_data" href="/profile/ngo/<%=locals.user.userName%>">
-                                    <%= locals.user.userName.split(" ")[0] %> 
+                        <a class="nav-link profile_data" href="/profile/user/<%=locals.user.userName%>">
+                            <%= locals.user.userName.split(" ")[0] %> 
+                        </a>
+                    <% } else if (locals.user.type === "ngo") { %>
+                        <a class=" nav-link profile_data" href="/profile/ngo/<%=locals.user.userName%>">
+                            <%= locals.user.userName.split(" ")[0] %> 
                         </a>
                     <% } %>
-                    <div class=" nav-item">
+                    <div class="nav-item">
                         <a class="nav-link dropdown-toggle" href="#" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false" style="color: white;">
                             <% if (locals.user.isAdmin) { %>
@@ -135,13 +135,13 @@
                         </a>
 
                         <ul class="dropdown-menu">
-                            <% if (locals.user.type==="user" ) { %>
+                            <% if (locals.user.type==="user") { %>
                                 <li style="padding-bottom: 5px; border-bottom: 1px solid black; display: none; margin-bottom: 5px;" class="hidden_profile">
                                     <a class="dropdown-item" href="/profile/user/<%=locals.user.userName%>">
                                         <%= locals.user.userName.split(" ")[0] %> 
                                     </a>
                                 </li>
-                            <% } else if (locals.user.type === " ngo") { %>
+                            <% } else if (locals.user.type === "ngo") { %>
                                 <li style="padding-bottom: 5px; border-bottom: 1px solid black; display: none; margin-bottom: 5px;" class="hidden_profile">
                                     <a class="dropdown-item" href="/profile/ngo/<%=locals.user.userName%>">
                                     <%= locals.user.userName.split(" ")[0] %>

@@ -1,6 +1,7 @@
 const express = require("express");
 const User = require("../models/user");
 const NGO = require("../models/ngo");
+const Admin = require("../models/admin");
 
 const router = express.Router();
 
@@ -64,6 +65,7 @@ router.patch("/editProfile/:id", async (req, res) => {
         try {
             let { name, user_mobile_number, email } = req.body;
             await User.findByIdAndUpdate(id, { name, user_mobile_number, email });
+            req.session.userName = name;
             req.flash("success", "Successfully updated profile! <a href='/'>Return home</a>.");
             res.redirect(`/profile/user/${name}`);
         }
@@ -76,6 +78,7 @@ router.patch("/editProfile/:id", async (req, res) => {
         try {
             let { name, NGO_range, NGO_sectors, NGO_webpage } = req.body;
             await NGO.findByIdAndUpdate(id, { name, NGO_range, NGO_sectors, NGO_webpage });
+            req.session.userName = name;
             req.flash("success", "Successfully updated profile! <a href='/'>Return home</a>.");
             res.redirect(`/profile/ngo/${name}`);
         }
@@ -88,6 +91,35 @@ router.patch("/editProfile/:id", async (req, res) => {
         req.flash("error", "Invalid user type. <a href='/signIn'>Log in</a> or <a href='/signUp'>create an account</a>.");
         res.redirect("/");
     }
-})
+});
+
+router.delete("/delete/:id", async (req, res) => {
+    const { id } = req.params;
+    if (req.session.userID == id) {
+        try {
+            if (req.session.type === "user") {
+                await User.findOneAndDelete({ email: id });
+                if (req.session.isAdmin) {
+                    await Admin.findOneAndDelete({ admin_email: req.session.userEmail });
+                }
+            } else if (req.session.type === "ngo") {
+                await NGO.findByIdAndDelete(id);
+            }
+            req.session.destroy(err => {
+                if (err) {
+                    console.error("Session destruction error:", err);
+                    return;
+                }
+                res.clearCookie("connect.sid");
+                res.redirect("/");
+            });
+        } catch (error) {
+            console.log("Error deleting user: " + error);
+        }
+    } else {
+        req.flash("error", "Invalid user ID.");
+        res.redirect(`/profile/${req.session.type}/${req.session.userName}`)
+    }
+});
 
 module.exports = router;

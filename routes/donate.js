@@ -109,7 +109,7 @@ router.post("/donate", async (req, res) => {
     if (!(new Date(req.body["dateOfDonation"]) < new Date())) {
         // find co-ordinates to given pickup address
         await geocode(req.body["pickupAddress"])
-            .then((response) => {
+            .then(async (response) => {
                 // if req.body contains "currLoc": this means co-ordinates are reliable
                 // else: this means address inside textarea is reliable
 
@@ -131,66 +131,72 @@ router.post("/donate", async (req, res) => {
                     visibility: req.body["visibility"]
                 });
                 // saving new donation details in DB
-                newDonation.save()
-                    .then((result) => {
-                        let i = 0;
-                        let destination = "";
-                        // emails of all NGOs will be stored in NGOemails
-                        let NGOemails = [];
-                        // range of all NGOs will be stored in NGOrange
-                        let NGOrange = [];
-                        NGO.find()
-                            .then(resultNGO => {
-                                const origin = newDonation.user_pickup_address.coordinates.latitude + "," + newDonation.user_pickup_address.coordinates.longitude;
-                                resultNGO.forEach(NGO => {
-                                    if (i === resultNGO.length) {
-                                        destination += NGO.NGO_address.coordinates.latitude + "," + NGO.NGO_address.coordinates.longitude;
-                                    } else {
-                                        destination += NGO.NGO_address.coordinates.latitude + "," + NGO.NGO_address.coordinates.longitude + ";";
-                                    }
-                                    NGOemails.push(NGO.email);
-                                    NGOrange.push(NGO.NGO_range);
-                                    i++;
-                                });
-                                // get distance between origin and all co-ordinates in destination
-                                const options = {
-                                    method: "GET",
-                                    url: "https://trueway-matrix.p.rapidapi.com/CalculateDrivingMatrix",
-                                    params: {
-                                        origins: origin,
-                                        destinations: destination
-                                    },
-                                    headers: {
-                                        "X-RapidAPI-Key": process.env.RapidAPI_Key,
-                                        "X-RapidAPI-Host": process.env.RapidAPI_Host
-                                    }
-                                };
-                                axios.request(options)
-                                    .then(responseAPI => {
-                                        let j = 0;
-                                        let results = responseAPI.data.distances[0];
-                                        // filtering out all NGOs whose distance is more than their range  
-                                        results.forEach(result => {
-                                            if (result / 1000 > NGOrange[j]) {
-                                                NGOemails.splice(j, 1);
-                                            }
-                                            j++;
-                                        })
-                                        sendMail(NGOemails, newDonation);
-                                        req.flash("success", "Donation successful!");
-                                        res.redirect("/");
-                                    }).catch(error => {
-                                        console.log("API Error:" + error);
-                                        res.render("donate.ejs", { user: req.session, error: "Someting went wrong. Try again." });
-                                    });
-                            }).catch(error => {
-                                console.log("Error retrieving NGO data: ", error);
-                                res.render("donate.ejs", { user: req.session, error: "Someting went wrong. Try again." });
-                            });
-                    }).catch(error => {
-                        console.log("Error saving donation: ", error);
+                try {
+                    await newDonation.save();
+                    let i = 0;
+                    // .then(async (result) => {
+                    let destination = "";
+                    // emails of all NGOs will be stored in NGOemails
+                    let NGOemails = [];
+                    // range of all NGOs will be stored in NGOrange
+                    let NGOrange = [];
+                    let resultNGO;
+                    try {
+                        if (req.body["visibility"] == 2) {
+                            resultNGO = await NGO.find({ NGO_isVerified: true });
+                        } else {
+                            resultNGO = await NGO.find();
+                        }
+                    } catch (error) {
+                        console.log("Error retrieving NGO data: ", error);
                         res.render("donate.ejs", { user: req.session, error: "Someting went wrong. Try again." });
+                    }
+                    const origin = newDonation.user_pickup_address.coordinates.latitude + "," + newDonation.user_pickup_address.coordinates.longitude;
+                    resultNGO.forEach(NGO => {
+                        if (i === resultNGO.length) {
+                            destination += NGO.NGO_address.coordinates.latitude + "," + NGO.NGO_address.coordinates.longitude;
+                        } else {
+                            destination += NGO.NGO_address.coordinates.latitude + "," + NGO.NGO_address.coordinates.longitude + ";";
+                        }
+                        NGOemails.push(NGO.email);
+                        NGOrange.push(NGO.NGO_range);
+                        i++;
                     });
+                    // get distance between origin and all co-ordinates in destination
+                    const options = {
+                        method: "GET",
+                        url: "https://trueway-matrix.p.rapidapi.com/CalculateDrivingMatrix",
+                        params: {
+                            origins: origin,
+                            destinations: destination
+                        },
+                        headers: {
+                            "X-RapidAPI-Key": process.env.RapidAPI_Key,
+                            "X-RapidAPI-Host": process.env.RapidAPI_Host
+                        }
+                    };
+                    axios.request(options)
+                        .then(responseAPI => {
+                            let j = 0;
+                            let results = responseAPI.data.distances[0];
+                            // filtering out all NGOs whose distance is more than their range  
+                            results.forEach(result => {
+                                if (result / 1000 > NGOrange[j]) {
+                                    NGOemails.splice(j, 1);
+                                }
+                                j++;
+                            })
+                            sendMail(NGOemails, newDonation);
+                            req.flash("success", "Donation successful!");
+                            res.redirect("/");
+                        }).catch(error => {
+                            console.log("API Error:" + error);
+                            res.render("donate.ejs", { user: req.session, error: "Someting went wrong. Try again." });
+                        });
+                } catch (error) {
+                    console.log("Error saving donation: ", error);
+                    res.render("donate.ejs", { user: req.session, error: "Someting went wrong. Try again." });
+                }
             }).catch(error => {
                 console.log("Error from Openstreetmap: ", error);
                 res.render("donate.ejs", { user: req.session, error: "Someting went wrong. Try again." });

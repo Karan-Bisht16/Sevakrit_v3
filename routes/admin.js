@@ -52,32 +52,53 @@ router.get("/adminEdit/ngo/:id", adminLoggedIn, async (req, res) => {
     }
     catch (error) {
         console.log(error);
+        res.redirect("/adminDashboard");
     }
 })
 
-router.patch("/adminEdit/:id", adminLoggedIn, async (req, res) => {
+router.post("/adminEdit/:id", adminLoggedIn, async (req, res) => {
     try {
         let { id } = req.params;
         let ngo = await NGO.findById(id);
-        await NGO.findByIdAndUpdate(id, {
-            name: req.body.name,
-            email: req.body.email,
-            NGO_registration_number: req.body.NGO_registration_number,
-            NGO_address: {
-                humanReadableAddress: req.body.NGO_address,
-                coordinates: {
-                    latitude: ngo.NGO_address.coordinates.latitude,
-                    longitude: ngo.NGO_address.coordinates.longitude
-                }
-            },
-            NGO_range: req.body.NGO_range,
-            NGO_date_of_joining: req.body.NGO_date_of_joining,
-            NGO_sectors: req.body.NGO_sectors
-        });
-        req.flash("success", "Successfully updated profile! <a href='/adminDashboard'>Return to dashboard</a>.");
-        res.redirect(`/adminView/ngo/${id}`)
-    }
-    catch (error) {
+        let uniqueNGOEmail = [];
+        let uniqueNGORegNo = [];
+
+        if (ngo.email != req.body.email) {
+            uniqueNGOEmail = await NGO.find({ email: req.body.email });
+        }
+        if (ngo.NGO_registration_number != req.body.NGO_registration_number) {
+            uniqueNGORegNo = await NGO.find({ NGO_registration_number: req.body.NGO_registration_number });
+        }
+        
+        if (uniqueNGOEmail.length === 0) {
+            if (uniqueNGORegNo.length === 0) {
+                await NGO.findByIdAndUpdate(id, {
+                    name: req.body.name,
+                    email: req.body.email,
+                    NGO_registration_number: req.body.NGO_registration_number,
+                    NGO_address: {
+                        humanReadableAddress: req.body.NGO_address,
+                        coordinates: {
+                            latitude: ngo.NGO_address.coordinates.latitude,
+                            longitude: ngo.NGO_address.coordinates.longitude
+                        }
+                    },
+                    NGO_range: req.body.NGO_range,
+                    NGO_date_of_joining: req.body.NGO_date_of_joining,
+                    NGO_sectors: req.body.NGO_sectors || "",
+                    NGO_webpage: req.body.NGO_webpage || ""
+                });
+                req.flash("success", "Successfully updated profile! <a href='/adminDashboard'>Return to dashboard</a>.");
+                res.redirect(`/adminView/ngo/${id}`)
+            } else {
+                req.flash("error", "Invalid Registration Number.");
+                res.redirect(`/adminView/ngo/${id}`);
+            }
+        } else {
+            req.flash("error", "Invalid e-mail id.");
+            res.redirect(`/adminView/ngo/${id}`);
+        }
+    } catch (error) {
         console.log("Error updating NGO details [by admin]:", error);
         req.flash("error", "Error updating NGO. <a href='/adminDashboard'>Return to dashboard</a>.");
         res.redirect("/adminDashboard");

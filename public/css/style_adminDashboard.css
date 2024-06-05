@@ -76,7 +76,7 @@ button.btn.btn-primary.btn-small {
         padding: 0;
     }
 
-    .row {
+    .row:not(footer .row) {
         display: none;
     }
 

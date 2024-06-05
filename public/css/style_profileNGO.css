@@ -28,6 +28,10 @@
     opacity: 0.8;
 }
 
+.modal-backdrop.show {
+    z-index: 1000;
+}
+
 @media (max-width: 1200px) {
     .content {
         padding: 20px 20px 100px 20px;

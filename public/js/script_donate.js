@@ -15,7 +15,7 @@ const checkBox = document.getElementById("currLoc");
 const textArea = document.getElementById("addressTextArea");
 const locResultDiv = document.getElementById("locResult");
 
-// if checkBox is checked: clear textArea content and make the co-ordinates and calculated location visible to user
+// if checkBox is checked: clear textArea content and make the co-ordinates visible and calculated location visible to user
 checkBox.addEventListener("change", () => {
     textArea.value = "";
     if (checkBox.checked) {
@@ -68,5 +68,5 @@ function success(position) {
     reverseGeocode(positionObj.latitude, positionObj.longitude);
 }
 function error() {
-    alert("Allow geolocation access");
+    alert("Geolocation access blocked. Enter address manually or allow geolocation access.");
 }

@@ -34,7 +34,7 @@
                     <form class="form-horizontal" onsubmit="return userDataValidation()" action="/editProfile/<%= data._id %>?_method=PATCH" method="post">
                 <% } else if (locals.user.type === "ngo") { %>
                     <form class="form-horizontal" onsubmit="return ngoDataValidation()" action="/editProfile/<%= data._id %>?_method=PATCH" method="post">
-                <% } %>"
+                <% } %>
                     <div class="form-group">
                         <label class="col-lg-3 control-label" for="naam">First name:</label>
                         <div class="col-lg-10">
@@ -99,6 +99,31 @@
                         </div>
                     </div>
                 </form>
+                <hr>
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
+                    Delete account
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-labelledby="deleteAccountModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5 fw-bold" id="deleteAccountModalLabel">Delete account?</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Once you delete your account, there is no going back. Please be certain.
+                </div>
+                <div class="modal-footer" style="border: none;">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <form action="/delete/<%= user.userID %>?_method=DELETE" method="POST">
+                        <button id="confirm-delete-account" type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

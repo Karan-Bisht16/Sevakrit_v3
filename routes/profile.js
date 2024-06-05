@@ -1,6 +1,8 @@
 const express = require("express");
 // for handling API requests
 const axios = require("axios");
+// to send mail
+const nodemailer = require("nodemailer");
 // to implement environment variables 
 require("dotenv").config();
 const NGO = require("../models/ngo");
@@ -9,6 +11,40 @@ const Donation = require("../models/donation");
 const { userLoggedIn, ngoLoggedIn } = require("../loginMiddleware");
 
 const router = express.Router();
+
+const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+        user: process.env.DevSquadEmail,
+        pass: process.env.EmailPassword
+    }
+});
+function sendMail(senderEmail, ngoData) {
+    let text =
+        `
+            Your donation was accepted by: <br> 
+                <b>NGO </b>: ${ngoData.name}, <br>
+                <b>Registration Number</b>: ${ngoData.NGO_registration_number}, <br>
+                <b>E-mail</b>: ${ngoData.email}, <br>
+            <br><br>
+            Thanks,
+            <br>
+            Sevakrit Team
+        `;
+    const mailOptions = {
+        from: process.env.DevSquadEmail,
+        to: senderEmail,
+        subject: "Your donation has been accepted!",
+        html: text
+    };
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log("Error on Nodemailer side: ", error);
+        } else {
+            console.log("Email sent to nearby NGOs.");
+        }
+    });
+}
 
 router.get("/profile/user/:username", userLoggedIn, async (req, res) => {
     try {
@@ -30,53 +66,69 @@ router.get("/profile/user/:username", userLoggedIn, async (req, res) => {
 });
 
 router.get("/profile/ngo/:ngoname", ngoLoggedIn, async (req, res) => {
-    await NGO.findOne({ email: req.session.userID })
-        .then(resultNGO => {
-            let i = 0;
-            let destination = "";
-            // to find all "open" donations
-            Donation.find({ donation_status: { status: 0, NGO_name: "" } })
-                .then(resultDonation => {
-                    const origin = resultNGO.NGO_address.coordinates.latitude + "," + resultNGO.NGO_address.coordinates.longitude;
-                    resultDonation.forEach(donation => {
-                        if (i === resultDonation.length) {
-                            destination += donation.user_pickup_address.coordinates.latitude + "," + donation.user_pickup_address.coordinates.longitude;
-                        } else {
-                            destination += donation.user_pickup_address.coordinates.latitude + "," + donation.user_pickup_address.coordinates.longitude + ";";
-                        }
-                        i++;
-                    });
-                    // get distance between origin and all co-ordinates in destination
-                    const options = {
-                        method: "GET",
-                        url: "https://trueway-matrix.p.rapidapi.com/CalculateDrivingMatrix",
-                        params: {
-                            origins: origin,
-                            destinations: destination
-                        },
-                        headers: {
-                            "X-RapidAPI-Key": process.env.RapidAPI_Key,
-                            "X-RapidAPI-Host": process.env.RapidAPI_Host
-                        }
-                    };
-                    axios.request(options)
-                        .then(responseAPI => {
-                            res.render("profileNGO.ejs", { user: req.session, NGOData: resultNGO, donationData: resultDonation, response: responseAPI.data });
-                        }).catch(error => {
-                            console.log("API Error: " + error);
-                            req.flash("error", "Something went wrong. Refresh to resolve.");
-                            res.redirect("/");
-                        });
-                }).catch(error => {
-                    console.log("Error retrieving donation data: " + error);
-                    req.flash("error", "Something went wrong. Refresh to resolve.");
-                    res.redirect("/");
+    try {
+        let resultNGO = await NGO.findOne({ email: req.session.userID });
+        let i = 0;
+        let destination = "";
+        try {
+            let resultDonation;
+            // if NGO is verified then show all donations (irrespective of visibility) that are open 
+            // or were previously accepted by that NGO
+            if (resultNGO.NGO_isVerified) {
+                resultDonation = await Donation.find({
+                    $or: [
+                        { donation_status: { status: 0, NGO_name: "" } },
+                        { donation_status: { status: 1, NGO_name: req.session.userName } }
+                    ]
                 });
-        }).catch(error => {
-            console.log("Error finding ngo: ", error);
-            req.flash("error", "Unable to find NGO. <a href='/signIn'>Log in</a> or <a href='/signUp'>create an account</a>.");
+            } else {
+                resultDonation = await Donation.find({
+                    $or: [
+                        { donation_status: { status: 0, NGO_name: "" }, visibility: { $in: [0, 1] } },
+                        { donation_status: { status: 1, NGO_name: req.session.userName } }
+                    ]
+                });
+            }
+            const origin = resultNGO.NGO_address.coordinates.latitude + "," + resultNGO.NGO_address.coordinates.longitude;
+            resultDonation.forEach(donation => {
+                if (i === resultDonation.length) {
+                    destination += donation.user_pickup_address.coordinates.latitude + "," + donation.user_pickup_address.coordinates.longitude;
+                } else {
+                    destination += donation.user_pickup_address.coordinates.latitude + "," + donation.user_pickup_address.coordinates.longitude + ";";
+                }
+                i++;
+            });
+            // get distance between origin and all co-ordinates in destination
+            const options = {
+                method: "GET",
+                url: "https://trueway-matrix.p.rapidapi.com/CalculateDrivingMatrix",
+                params: {
+                    origins: origin,
+                    destinations: destination
+                },
+                headers: {
+                    "X-RapidAPI-Key": process.env.RapidAPI_Key,
+                    "X-RapidAPI-Host": process.env.RapidAPI_Host
+                }
+            };
+            try {
+                let responseAPI = await axios.request(options)
+                res.render("profileNGO.ejs", { user: req.session, NGOData: resultNGO, donationData: resultDonation, response: responseAPI.data });
+            } catch (error) {
+                console.log("API Error: " + error);
+                req.flash("error", "Something went wrong. Refresh to resolve.");
+                res.redirect("/");
+            }
+        } catch (error) {
+            console.log("Error retrieving donation data: " + error);
+            req.flash("error", "Something went wrong. Refresh to resolve.");
             res.redirect("/");
-        });
+        }
+    } catch (error) {
+        console.log("Error finding ngo: ", error);
+        req.flash("error", "Unable to find NGO. <a href='/signIn'>Log in</a> or <a href='/signUp'>create an account</a>.");
+        res.redirect("/");
+    }
 });
 
 router.post("/profile/ngo/:ngoname", ngoLoggedIn, async (req, res) => {
@@ -90,6 +142,19 @@ router.post("/profile/ngo/:ngoname", ngoLoggedIn, async (req, res) => {
         console.log("Error finding ngo: ", error);
         req.flash("error", "No such NGO found. <a href='/signIn'>Log in</a> or <a href='/signUp'>create an account</a>.");
         res.redirect("/");
+    }
+});
+
+router.put("/profile/ngo/accept-donation", ngoLoggedIn, async (req, res) => {
+    const { donationID } = req.body;
+    try {
+        let donation = await Donation.findByIdAndUpdate(donationID, { donation_status: { status: 1, NGO_name: req.session.userName } });
+        let ngo = await NGO.findOne({email: req.session.userID});
+        sendMail(donation.donar_email, ngo);
+        res.sendStatus(200);
+    } catch (error) {
+        console.log("Error in accepting donation: ", error);
+        res.sendStatus(500);
     }
 });
 
