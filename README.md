@@ -70,7 +70,7 @@ Sevakrit establishes a network chain process for individuals and communities to 
 3. Create a `.env` file and add:
 
    ```env
-   MONGODB_URI=your_mongodb_uri
+   MONGODB_URI = your_mongodb_uri
    SessionSecret = your_session_secret
    RapidAPI_Key = your_rapidapi_key
    RapidAPI_Host = your_rapidapi_host
