@@ -13,7 +13,7 @@ const app = express();
 const PORT = 1600;
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true })); 
 app.use(methodOverride("_method"));
 
 app.use(express.static(__dirname + "/public"));
